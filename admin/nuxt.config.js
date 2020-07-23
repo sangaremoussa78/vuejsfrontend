@@ -75,7 +75,7 @@ export default {
     // Doc: https://bootstrap-vue.js.org
     // 'bootstrap-vue/nuxt',
     // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios',
+    '@nuxtjs/axios'
   ],
   /*
   ** Axios module configuration

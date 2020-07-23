@@ -35,11 +35,11 @@
             this.validation_errors = [];
             this.error_message = '';
 
+            this.clearStorage();
+
             this.$axios.$post('api/login', this.login_data).then(response => {
 
-              localStorage.setItem('is_authenticated', 1);
-              localStorage.setItem('auth_token', response.access_token);
-              localStorage.setItem('user_data', JSON.stringify(response.user));
+              this.saveIntoStorage(response);
 
               this.$router.push('/');
             }).catch(error => {
@@ -51,6 +51,16 @@
                 }
               }
             });
+          },
+          clearStorage() {
+            localStorage.removeItem('is_authenticated');
+            localStorage.removeItem('auth_token');
+            localStorage.removeItem('user_data');
+          },
+          saveIntoStorage(response) {
+            localStorage.setItem('is_authenticated', 1);
+            localStorage.setItem('auth_token', response.access_token);
+            localStorage.setItem('user_data', JSON.stringify(response.user));
           }
         }
     }
