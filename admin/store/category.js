@@ -8,7 +8,6 @@ export const state = () => ({
   },
   categoryHtmlTree: '',
   features: [
-    {id: Math.floor(Math.random() * 1000), field_title: '', field_type: 1, category_id: ''}
   ],
   filterData: {
     id: '',
@@ -175,12 +174,9 @@ export const actions = {
       console.log(err);
     });
   },
-  updateCategory({commit, router}, payload) {
+  updateCategory({commit}, payload) {
     commit('shared/resetStatusMessagesParameters', null, {root: true});
     commit('shared/setStatusMessageParameter', {key: 'showLoading', val: true}, {root: true});
-
-    let dataToSend = payload.data;
-    dataToSend.features = payload.features;
 
     CategoryApi.update(this.$axios, payload.data, payload.id).then(response => {
       commit('shared/setStatusMessageParameter', {key: 'showLoading', val: false}, {root: true});

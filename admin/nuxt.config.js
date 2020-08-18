@@ -51,6 +51,9 @@ export default {
   ** Global CSS
   */
   css: [
+    'quill/dist/quill.core.css',
+    'quill/dist/quill.snow.css',
+    'quill/dist/quill.bubble.css'
   ],
   /*
   ** Plugins to load before mounting the App
