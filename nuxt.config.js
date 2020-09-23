@@ -15,14 +15,27 @@ export default {
   ** See https://nuxtjs.org/api/configuration-head
   */
   head: {
-    title: process.env.npm_package_name || '',
+    title: 'Online Shop',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
+      { hid: 'description', name: 'description', content: 'Online Shop' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'stylesheet', type: 'text/css', href: '/css/bootstrap.min.css' },
+      { rel: 'stylesheet', type: 'text/css', href: '/css/font-awesome.min.css' },
+      { rel: 'stylesheet', type: 'text/css', href: '/css/prettyPhoto.css' },
+      { rel: 'stylesheet', type: 'text/css', href: '/css/price-range.css' },
+      { rel: 'stylesheet', type: 'text/css', href: '/css/main.css' },
+      { rel: 'stylesheet', type: 'text/css', href: '/css/responsive.css' },
+    ],
+    script: [
+      { src: 'js/jquery.js', type: 'text/javascript' },
+      { src: 'js/bootstrap.min.js', type: 'text/javascript' },
+      { src: 'js/jquery.scrollUp.min.js', type: 'text/javascript' },
+      { src: 'js/price-range.js', type: 'text/javascript' },
+      { src: 'js/jquery.prettyPhoto.js', type: 'text/javascript' },
+      { src: 'js/main.js', type: 'text/javascript' },
     ]
   },
   /*
@@ -51,15 +64,22 @@ export default {
   */
   modules: [
     // Doc: https://bootstrap-vue.js.org
-    'bootstrap-vue/nuxt',
     '@nuxtjs/axios',
   ],
-  axios: {},
+  axios: {
+    baseURL: 'http://localhost/webmobtuts/online-shop-backend/public/'
+  },
   /*
   ** Build configuration
   ** See https://nuxtjs.org/api/configuration-build/
   */
   build: {
+    devMiddleware: {
+      headers: {
+        'Cache-Control': 'no-store',
+        Vary: '*'
+      }
+    }
   },
   srcDir: __dirname,
   buildDir: '.nuxt/frontend'

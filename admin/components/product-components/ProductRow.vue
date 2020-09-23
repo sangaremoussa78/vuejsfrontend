@@ -2,13 +2,11 @@
   <tr>
     <td>{{ this.product.id }}</td>
     <td>{{ this.product.title }}</td>
+    <td><div class="row" v-html="displayImages(this.product)"></div></td>
     <td><span class="badge badge-info">{{ this.product.price }} $</span></td>
     <td><strong class="inventory">{{ this.product.amount }}</strong></td>
     <td><nuxt-link :to="'/category/' + this.product.category_id">{{ this.product.category.title }}</nuxt-link></td>
     <td>{{ this.product.user?this.product.user.name:"" }}</td>
-    <td>
-      <strong>{{ this.product.brand?this.product.brand.title:"" }}</strong>
-    </td>
     <td>
 
       <ul class="nav nav-tabs options-dropdown">
@@ -35,6 +33,15 @@
         methods: {
           removeProduct(productId) {
             this.$emit('removeProduct', productId);
+          },
+          displayImages(product) {
+            let images = "";
+
+            for(let i = 0; i < product.gallery.length; i++) {
+              images += `<div class="col-md-8" style="margin: 5px"><img src="${product.gallery[i].image_url.small}" /></div>`;
+            }
+
+            return images;
           }
         }
     }

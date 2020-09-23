@@ -32,9 +32,10 @@
       <a href="#">
         <i class="fas fa-credit-card"></i>Payment methods</a>
     </li>
-    <li>
-      <a href="#">
-        <i class="fas fa-users"></i>Users</a>
+    <li :class="{active: this.$route.path.indexOf('user') !== -1}">
+      <nuxt-link to="/user">
+        <i class="fas fa-users"></i>Users
+      </nuxt-link>
     </li>
     <li>
       <a href="#">

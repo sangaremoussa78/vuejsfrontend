@@ -33,6 +33,13 @@
                       <label for="description" class=" form-control-label">Description</label>
                       <textarea id="description" name="description" class="form-control" v-model="description"></textarea>
                     </div>
+                    <div class="form-group">
+                      <label for="featured" class=" form-control-label">Is Featured</label>
+                      <select id="featured" name="featured" class="form-control" v-model="featured">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -99,6 +106,14 @@
             },
             get() {
               return this.$store.state.category.category.description;
+            }
+          },
+          featured: {
+            set(featured) {
+              this.$store.commit('category/setFeatured', featured);
+            },
+            get() {
+              return this.$store.state.category.category.featured;
             }
           },
           categoryTree() {

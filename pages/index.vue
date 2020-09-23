@@ -1,54 +1,105 @@
 <template>
-  <div class="container">
-    <div>
-      <h1 class="title">
-        online-shop-frontend
-      </h1>
-    </div>
+  <div>
+    <Slider v-if="sliderProducts.length" :sliderProducts="sliderProducts"></Slider>
+
+    <section>
+      <div class="container">
+        <div class="row">
+
+          <div class="col-sm-12 padding-right">
+            <LatestItems v-if="latestProducts.length" :latestProducts="latestProducts"></LatestItems>
+
+            <FeaturedCategories v-if="featuredCategories.length" :featured-categories="featuredCategories"></FeaturedCategories>
+
+            <FeaturedProducts v-if="featuredItems.length" :featuredItems="featuredItems"></FeaturedProducts>
+
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
 <script>
-export default {}
+  import {HomeApis} from '../api/home';
+  import Slider from '../components/home-components/Slider';
+  import LatestItems from "../components/home-components/LatestItems";
+  import FeaturedCategories from "../components/home-components/FeaturedCategories";
+  import FeaturedProducts from "../components/home-components/FeaturedProducts";
+  export default {
+    components: {
+      FeaturedProducts,
+      FeaturedCategories,
+      LatestItems,
+      Slider
+    },
+    data() {
+      return {
+        sliderProducts: [],
+        latestProducts: [],
+        featuredCategories: [],
+        featuredItems: []
+      }
+    },
+    head() {
+      return {
+        title: 'Online Shop | Home',
+        meta: [
+          {
+            hid: 'description',
+            name: 'description',
+            content: 'Online Shop Home Page'
+          }
+        ]
+      }
+    },
+    mounted() {
+      // retrieve slider products
+      HomeApis.getSliderProducts(this.$axios).then(res => {
+        this.sliderProducts = res.products;
+      });
+
+      // retrieve latest items
+      HomeApis.getLatestProducts(this.$axios).then(res => {
+        this.latestProducts = res.products;
+      });
+
+      // featured categories
+      HomeApis.getFeaturedCategories(this.$axios).then(res => {
+        this.featuredCategories = res.categories;
+      });
+
+      // featured products
+      // Try to reduce the main products array into sub arrays, each array with 3 products in order for
+      // the bootstrap carousal to render them properly
+      HomeApis.getFeaturedProducts(this.$axios).then(res => {
+        if(res.products.length == 0) {
+          this.featuredItems = [];
+        } else {
+          const totalProducts = res.products.length;
+          const numCarousalItems = Math.ceil(totalProducts / 3);
+
+          for(let i = 0; i < numCarousalItems; i++) {
+            this.featuredItems.push({
+              id: i + '-' + i + '-' + i,
+              products: []
+            });
+          }
+
+          for(let i = 0; i < res.products.length; i++) {
+              const itemIndex = parseInt(i / 3);
+              if(this.featuredItems[itemIndex].products.length == 3) {
+                this.featuredItems[itemIndex + 1].products.push(res.products[i]);
+              } else {
+                this.featuredItems[itemIndex].products.push(res.products[i]);
+              }
+          }
+        }
+      });
+    }
+  }
 </script>
 
 <style>
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
 
-.title {
-  font-family:
-    'Quicksand',
-    'Source Sans Pro',
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    'Helvetica Neue',
-    Arial,
-    sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
-}
 </style>

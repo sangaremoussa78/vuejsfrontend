@@ -84,7 +84,7 @@
 
               <div class="row" v-if="this.$store.state.product.gallery.length">
                 <div class="col-lg-3" v-for="(record, index) of this.$store.state.product.gallery">
-                    <img :src="record.image" class="photo_preview" />
+                    <img :src="record.image_url.small" class="photo_preview" />
                     <a href="#" class="btn btn-danger" @click.prevent="removeImage(record.id)" title="remove"><i class="fa fa-remove"></i></a>
                 </div>
               </div>
@@ -138,6 +138,26 @@
               <p>Price after discount: <strong>{{ this.getPriceWithDiscount() }}</strong></p>
             </div>
 
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>Display options</strong>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="form-group">
+                <label for="featured" class=" form-control-label">Is Featured Product</label>
+                <select id="featured" name="featured" class="form-control" :value="this.product.featured" @change="updateField($event)">
+                  <option value="0">No</option>
+                  <option value="1">Yes</option>
+                </select>
+              </div>
+            </div>
           </div>
         </div>
       </div>

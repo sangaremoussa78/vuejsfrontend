@@ -11,7 +11,8 @@ export const state = () => ({
     discount_end_date: '',
     category_id: '',
     product_code: '',
-    brand_id: ''
+    brand_id: '',
+    featured: 0
   },
   files: [],
   files_preview: [],
@@ -174,6 +175,10 @@ export const actions = {
           }
 
           if(key === 'discount_end_date' && response.product[key] == null) {
+            response.product[key] = "";
+          }
+
+          if(key === 'brand_id' && response.product[key] == null) {
             response.product[key] = "";
           }
 

@@ -18,11 +18,11 @@
                 <tr>
                   <th>#</th>
                   <th>Title</th>
+                  <th>Images</th>
                   <th>Price</th>
                   <th>Inventory</th>
                   <th>Category</th>
                   <th>By</th>
-                  <th>Brand</th>
                   <th>Options</th>
                 </tr>
                 </thead>
@@ -91,6 +91,10 @@
 
           return payload;
         }
+      },
+      mounted() {
+         // re-initialize tabs
+        $('.options-dropdown').tab();
       }
     }
 </script>

@@ -4,7 +4,8 @@ export const state = () => ({
   category: {
     title: '',
     parent_id: '',
-    description: ''
+    description: '',
+    featured: 0
   },
   categoryHtmlTree: '',
   features: [
@@ -28,6 +29,9 @@ export const mutations = {
   setDescription(state, description) {
     state.category.description = description;
   },
+  setFeatured(state, featured) {
+    state.category.featured = featured;
+  },
   setCategoryHtmlTree(state, tree) {
     state.categoryHtmlTree = tree;
   },
@@ -35,7 +39,8 @@ export const mutations = {
     state.category = {
         title: '',
         parent_id: '',
-        description: ''
+        description: '',
+        featured: 0
     };
     state.features = [];
   },
@@ -163,6 +168,7 @@ export const actions = {
         commit('setTitle', response.category.title);
         commit('setDescription', response.category.description);
         commit('setParentId', response.category.parent_id);
+        commit('setFeatured', response.category.featured);
 
         // set features
         if(response.category.features) {

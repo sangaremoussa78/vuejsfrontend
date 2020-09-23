@@ -19,6 +19,7 @@
                     <th>#</th>
                     <th>Title</th>
                     <th>Parent</th>
+                    <th>Featured</th>
                     <th>Options</th>
                   </tr>
                 </thead>
