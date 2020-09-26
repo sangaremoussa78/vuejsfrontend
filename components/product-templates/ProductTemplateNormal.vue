@@ -32,7 +32,17 @@
 <script>
     export default {
         name: "ProductTemplateNormal",
-        props: ["item"]
+        props: ["item"],
+        methods: {
+          methods: {
+            addToCart(productId) {
+
+            },
+            addToWishList(productId) {
+
+            }
+          }
+        }
     }
 </script>
 

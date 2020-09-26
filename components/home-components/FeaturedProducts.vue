@@ -21,7 +21,7 @@
 </template>
 
 <script>
-    import ProductTemplateMini from "../product-components/ProductTemplateMini";
+    import ProductTemplateMini from "../product-templates/ProductTemplateMini";
     export default {
         name: "FeaturedProducts",
         components: {ProductTemplateMini},

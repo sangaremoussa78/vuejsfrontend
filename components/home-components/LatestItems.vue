@@ -8,21 +8,11 @@
 </template>
 
 <script>
-    import ProductTemplateNormal from "../product-components/ProductTemplateNormal";
+    import ProductTemplateNormal from "../product-templates/ProductTemplateNormal";
     export default {
         name: "LatestItems",
-      components: {ProductTemplateNormal},
-      props: ["latestProducts"],
-        mounted() {
-        },
-        methods: {
-          addToCart(productId) {
-
-          },
-          addToWishList(productId) {
-
-          }
-        }
+        components: {ProductTemplateNormal},
+        props: ["latestProducts"]
     }
 </script>
 

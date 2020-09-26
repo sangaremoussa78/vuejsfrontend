@@ -67,6 +67,10 @@
       // featured categories
       HomeApis.getFeaturedCategories(this.$axios).then(res => {
         this.featuredCategories = res.categories;
+
+        this.featuredCategories.map(category => {
+          category.products = category.products.slice(0, 4);
+        });
       });
 
       // featured products

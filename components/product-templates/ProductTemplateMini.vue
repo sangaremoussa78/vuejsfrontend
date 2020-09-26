@@ -18,10 +18,7 @@
     export default {
         name: "ProductTemplateMini",
         props: ["item"],
-        mounted() {
-
-        },
-      methods: {
+        methods: {
           addToCart(productId) {
 
           }

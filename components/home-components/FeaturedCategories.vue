@@ -16,14 +16,11 @@
 </template>
 
 <script>
-    import ProductTemplateSmall from "../product-components/ProductTemplateSmall";
+    import ProductTemplateSmall from "../product-templates/ProductTemplateSmall";
     export default {
         name: "FeaturedCategories",
-      components: {ProductTemplateSmall},
-      props: ["featuredCategories"],
-      mounted() {
-
-      }
+        components: {ProductTemplateSmall},
+        props: ["featuredCategories"]
     }
 </script>
 
