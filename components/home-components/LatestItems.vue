@@ -2,7 +2,9 @@
   <div class="features_items">
     <h2 class="title text-center">Latest Items</h2>
 
-    <ProductTemplateNormal v-for="(item, index) in this.latestProducts" :key="index" :item="item"></ProductTemplateNormal>
+    <div class="col-sm-3" v-for="(item, index) in this.latestProducts" :key="index">
+      <ProductTemplateNormal  :item="item"></ProductTemplateNormal>
+    </div>
 
   </div>
 </template>

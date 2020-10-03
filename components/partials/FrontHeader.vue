@@ -38,13 +38,13 @@
             </div>
             <div class="mainmenu pull-left">
               <ul class="nav navbar-nav collapse navbar-collapse">
-                <li><nuxt-link to="/" class="active">Home</nuxt-link></li>
-                <li><nuxt-link to="/shop">Shop</nuxt-link></li>
+                <li><nuxt-link to="/" :class="{active: this.$route.path === '/'}">Home</nuxt-link></li>
+                <li><nuxt-link to="/shop" :class="{active: this.$route.path.indexOf('shop') !== -1}">Shop</nuxt-link></li>
                 <li class="dropdown">
                   <a href="#">Categories<i class="fa fa-angle-down"></i></a>
                   <CategoryTree v-if="this.categoriesTree.length" :dataTree="categoriesTree"></CategoryTree>
                 </li>
-                <li><nuxt-link to="/contactus">Contact</nuxt-link></li>
+                <li><nuxt-link to="/contactus" :class="{active: this.$route.path.indexOf('contactus') !== -1}">Contact</nuxt-link></li>
               </ul>
             </div>
           </div>
@@ -60,24 +60,18 @@
 </template>
 
 <script>
-    import { HomeApis } from '../../api/home';
     import CategoryTree from '../../components/partials/CategoryTree';
     export default {
         name: "FrontHeader",
         components: {CategoryTree},
-        data() {
-          return {
-            categoriesTree: []
+        computed: {
+          categoriesTree() {
+            return this.$store.state.general.categoriesTree;
           }
         },
         mounted() {
-          HomeApis.getCategoryMenuTree(this.$axios).then(res => {
-                 this.categoriesTree = res;
-          });
-        },
-      methods: {
-
-      }
+          this.$store.dispatch('general/fetchCategoryTree');
+        }
     }
 </script>
 

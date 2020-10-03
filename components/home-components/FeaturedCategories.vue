@@ -9,7 +9,9 @@
     </div>
     <div class="tab-content">
       <div v-for="(category, index) in this.featuredCategories" :key="index" :class="'tab-pane fade ' + (index == 0 ? 'active in' : '')" :id="category.id + '-' + category.id" >
-        <ProductTemplateSmall v-if="category.products.length" v-for="product in category.products" :item="product" :key="product.id"></ProductTemplateSmall>
+        <div class="col-sm-3" v-if="category.products.length" v-for="product in category.products" :key="product.id">
+          <ProductTemplateSmall :item="product"></ProductTemplateSmall>
+        </div>
       </div>
     </div>
   </div>
