@@ -1,5 +1,6 @@
 import { HomeApis } from '../api/home';
 import {ShopApi} from "../api/shop";
+import {CategoryApi} from "../api/category";
 
 export const state = () => ({
   categoriesTree: [],
@@ -14,7 +15,8 @@ export const state = () => ({
     from_price: '',
     to_price: '',
     keyword: ''
-  }
+  },
+  category: {}
 });
 
 export const mutations = {
@@ -44,6 +46,9 @@ export const mutations = {
   },
   setKeyword(state, keyword) {
     state.shop_filter.keyword = keyword;
+  },
+  setCategory(state, category) {
+    state.category = category;
   }
 };
 
@@ -88,5 +93,18 @@ export const actions = {
     const response = await ShopApi.getBrandsByCategory(this.$axios, categoryId);
 
     commit('setBrandsByCategory', response.brands);
+  },
+  async fetchCategory({commit}, categoryId) {
+    const response = await CategoryApi.getById(this.$axios, categoryId);
+
+    commit('setCategory', response.category);
+  },
+  resetShopFilter({commit}) {
+    commit('setPage', 1);
+    commit('setCategoryId', "");
+    commit('setBrand', "");
+    commit('setFromPrice', "");
+    commit('setToPrice', "");
+    commit('setBrandsByCategory', []);
   }
 }

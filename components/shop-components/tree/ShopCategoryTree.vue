@@ -34,7 +34,9 @@
         props: ["categoriesTree"],
         mounted() {
           setTimeout(() => {
-            $("#accordion").collapse();
+            if($("#accordion").length) {
+              $("#accordion").collapse();
+            }
           }, 200);
         },
         methods: {

@@ -4,7 +4,7 @@
     <h2 v-if="pageType === 'shop'">Category</h2>
     <ShopCategoryTree :categoriesTree="categoriesTree" v-if="pageType === 'shop'"></ShopCategoryTree>
 
-    <div class="brands_products" v-if="brands.length"><!--brands_products-->
+    <div class="brands_products" v-if="brands.length && (pageType === 'shop' || pageType === 'category')"><!--brands_products-->
       <h2>Brands</h2>
       <div class="brands-name">
         <ul class="nav nav-pills nav-stacked">
@@ -48,7 +48,11 @@
             this.$store.commit('general/setFromPrice', '');
             this.$store.commit('general/setToPrice', '');
 
-            this.$router.push({ path: 'shop', query: { category_id: this.$route.query.category_id, brand_id}});
+            if(this.$route.path.indexOf('shop') !== -1) {
+              this.$router.push({path: 'shop', query: {category_id: this.$route.query.category_id, brand_id}});
+            } else {
+              this.$router.push({path: this.$route.path, query: {brand_id}});
+            }
 
             this.$store.dispatch('general/fetchShopProducts');
           },
@@ -58,7 +62,7 @@
             // update url
             let query = {...this.$route.query};
             query.from_price = event.target.value;
-            this.$router.push({ path: 'shop', query});
+            this.$router.push({ path: this.$route.path, query});
 
             this.$store.dispatch('general/fetchShopProducts');
           },
@@ -68,7 +72,7 @@
             // update url
             let query = {...this.$route.query};
             query.to_price = event.target.value;
-            this.$router.push({ path: 'shop', query});
+            this.$router.push({ path: this.$route.path, query});
 
             this.$store.dispatch('general/fetchShopProducts');
           }

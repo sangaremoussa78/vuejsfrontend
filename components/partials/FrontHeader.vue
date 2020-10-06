@@ -49,9 +49,11 @@
             </div>
           </div>
           <div class="col-sm-3">
-            <div class="search_box pull-right">
-              <input type="text" placeholder="Search"/>
-            </div>
+            <form method="get" @submit.prevent="search()">
+              <div class="search_box pull-right">
+                <input type="text" name="keyword" placeholder="Search" v-model="keyword" />
+              </div>
+            </form>
           </div>
         </div>
       </div>
@@ -64,9 +66,26 @@
     export default {
         name: "FrontHeader",
         components: {CategoryTree},
+        data() {
+          return {
+            keyword: ""
+          }
+        },
         computed: {
           categoriesTree() {
             return this.$store.state.general.categoriesTree;
+          }
+        },
+        methods: {
+          search() {
+            // reset shop filter
+            this.$store.dispatch('general/resetShopFilter');
+
+            this.$store.commit('general/setKeyword', this.keyword);
+
+            this.$router.push({ path: "/search", query: {keyword: this.keyword}});
+
+            this.$store.dispatch('general/fetchShopProducts');
           }
         },
         mounted() {

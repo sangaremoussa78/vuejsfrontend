@@ -37,11 +37,6 @@
         ProductTemplateNormal,
         ShopSidebar
       },
-      data() {
-        return {
-
-        }
-      },
       computed: {
         categoriesTree() {
           return this.$store.state.general.categoriesTree;
@@ -71,7 +66,7 @@
 
             this.updateRouteQueryString('page', page_number);
 
-            this.$store.dispatch('general/fetchShopProducts', "page=" + this.$store.state.general.shop.page);
+            this.$store.dispatch('general/fetchShopProducts');
         },
         updateRouteQueryString(key, value) {
           let query = {...this.$route.query};
@@ -82,11 +77,12 @@
         }
       },
       mounted() {
+        // reset shop filter
+        this.$store.dispatch('general/resetShopFilter');
+
 
         if(this.$route.query.page) {
           this.$store.commit('general/setPage', this.$route.query.page);
-        } else {
-          this.$store.commit('general/setPage', 1);
         }
 
         if(this.$route.query.category_id) {
@@ -94,27 +90,18 @@
 
           // load brands by this category
           this.$store.dispatch('general/fetchBrandsByCategory', this.$route.query.category_id);
-        } else {
-          this.$store.commit('general/setCategoryId', "");
-          this.$store.commit('general/setBrandsByCategory', []);
         }
 
         if(this.$route.query.brand_id) {
           this.$store.commit('general/setBrand', this.$route.query.brand_id);
-        } else {
-          this.$store.commit('general/setBrand', "");
         }
 
         if(this.$route.query.from_price) {
           this.$store.commit('general/setFromPrice', this.$route.query.from_price);
-        } else {
-          this.$store.commit('general/setFromPrice', "");
         }
 
         if(this.$route.query.to_price) {
           this.$store.commit('general/setToPrice', this.$route.query.to_price);
-        } else {
-          this.$store.commit('general/setToPrice', "");
         }
 
         this.$nextTick(() => {
