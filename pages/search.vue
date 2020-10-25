@@ -1,6 +1,7 @@
 <template>
   <section>
     <div class="container">
+      <h2 class="title text-left">Search results for "{{ this.keyword }}"</h2>
       <div class="row">
         <div class="col-sm-3">
           <ShopSidebar pageType="search"></ShopSidebar>
@@ -8,7 +9,6 @@
 
         <div class="col-sm-9 padding-right" v-if="this.products.data && this.products.data.length">
           <div class="features_items">
-            <h2 class="title text-center">Latest Items</h2>
 
             <div class="col-sm-4" v-for="(item, index) in this.products.data" :key="index">
               <ProductTemplateNormal :item="item"></ProductTemplateNormal>
@@ -29,13 +29,19 @@
   import ShopSidebar from "../components/shop-components/ShopSidebar";
   import ProductTemplateNormal from "../components/product-templates/ProductTemplateNormal";
   import FrontPagination from "../components/helpers/FrontPagination";
+  import {paginate} from "../helpers/functions";
+
   export default {
     name: "Search",
     components: {
       FrontPagination,
       ProductTemplateNormal,
       ShopSidebar
-
+    },
+    data() {
+      return {
+         keyword: ""
+      }
     },
     head() {
       return {
@@ -59,18 +65,7 @@
     },
     methods: {
       paginate(page_number) {
-        this.$store.commit('general/setPage', page_number);
-
-        this.updateRouteQueryString('page', page_number);
-
-        this.$store.dispatch('general/fetchShopProducts');
-      },
-      updateRouteQueryString(key, value) {
-        let query = {...this.$route.query};
-
-        query[key] = value;
-
-        this.$router.push({ path: 'search', query});
+        paginate(this, page_number);
       }
     },
     mounted() {
@@ -79,6 +74,8 @@
 
 
       if (this.$route.query.keyword) {
+        this.keyword = this.$route.query.keyword;
+
         this.$store.commit('general/setKeyword', this.$route.query.keyword);
       }
 

@@ -1048,7 +1048,7 @@ h2.title {
   overflow: hidden;
 }
 
-.category-tab ul {
+.category-tab ul.nav-tabs {
   background: #40403E;
   border-bottom: 1px solid #FE980F;
   list-style: none outside none;
@@ -2590,4 +2590,22 @@ h2.title {
 .discount-ribbon span {
   transform: rotateZ(41deg);
   display: inline-block;
+}
+
+.discount-ribbon-details {
+  position: absolute;
+  text-align: center;
+  color: #f0f0f0;
+  top: 0;
+  left: 0;
+  width: 71px;
+  height: 28px;
+  font-size: 17px;
+  background: red;
+}
+
+.discount-ribbon-details span {
+  display: inline-block;
+  margin-top: 3px;
+  font-weight: bold;
 }

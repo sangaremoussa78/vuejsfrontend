@@ -21,7 +21,7 @@
       <div class="choose">
         <ul class="nav nav-pills nav-justified">
           <li><a href="javascript:void(0);" @click.prevent="addToWishList(item.id)"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
-          <li><nuxt-link :to="'p/' + item.id + '/' + item.slug"><i class="fa fa-eye"></i>view item</nuxt-link></li>
+          <li><nuxt-link :to="'/p/' + item.id + '/' + item.slug"><i class="fa fa-eye"></i>view item</nuxt-link></li>
         </ul>
       </div>
     </div>

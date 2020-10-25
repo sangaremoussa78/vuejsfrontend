@@ -25,17 +25,15 @@ export default {
       { rel: 'stylesheet', type: 'text/css', href: '/css/bootstrap.min.css' },
       { rel: 'stylesheet', type: 'text/css', href: '/css/font-awesome.min.css' },
       { rel: 'stylesheet', type: 'text/css', href: '/css/prettyPhoto.css' },
-      { rel: 'stylesheet', type: 'text/css', href: '/css/price-range.css' },
       { rel: 'stylesheet', type: 'text/css', href: '/css/main.css' },
       { rel: 'stylesheet', type: 'text/css', href: '/css/responsive.css' },
     ],
     script: [
-      { src: 'js/jquery.js', type: 'text/javascript' },
-      { src: 'js/bootstrap.min.js', type: 'text/javascript' },
-      { src: 'js/jquery.scrollUp.min.js', type: 'text/javascript' },
-      { src: 'js/price-range.js', type: 'text/javascript' },
-      { src: 'js/jquery.prettyPhoto.js', type: 'text/javascript' },
-      { src: 'js/main.js', type: 'text/javascript' },
+      { src: '/js/jquery.js', type: 'text/javascript' },
+      { src: '/js/bootstrap.min.js', type: 'text/javascript' },
+      { src: '/js/jquery.scrollUp.min.js', type: 'text/javascript' },
+      { src: '/js/jquery.prettyPhoto.js', type: 'text/javascript' },
+      { src: '/js/main.js', type: 'text/javascript' },
     ]
   },
   /*

@@ -28,6 +28,7 @@
 
 <script>
     import ShopCategoryTreeNested from "./ShopCategoryTreeNested";
+
     export default {
         name: "ShopCategoryTree",
         components: {ShopCategoryTreeNested},

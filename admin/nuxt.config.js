@@ -34,15 +34,15 @@ export default {
     ],
     script: [
       {
-        src: 'vendor/jquery-3.2.1.min.js',
+        src: '/vendor/jquery-3.2.1.min.js',
         type: 'text/javascript'
       },
       {
-        src: 'vendor/bootstrap-4.1/popper.min.js',
+        src: '/vendor/bootstrap-4.1/popper.min.js',
         type: 'text/javascript'
       },
       {
-        src: 'vendor/bootstrap-4.1/bootstrap.min.js',
+        src: '/vendor/bootstrap-4.1/bootstrap.min.js',
         type: 'text/javascript'
       }
     ]

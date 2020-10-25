@@ -7,7 +7,6 @@
 /*scroll to top*/
 
 $(document).ready(function(){
-  $('#sl2').slider();
 	$(function () {
 		$.scrollUp({
 	        scrollName: 'scrollUp', // Element ID

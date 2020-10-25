@@ -31,6 +31,8 @@
 
 <script>
     import ShopCategoryTree from "./tree/ShopCategoryTree";
+    import {updateRouteQueryString} from "../../helpers/functions";
+
     export default {
         name: "ShopSidebar",
         components: {ShopCategoryTree},
@@ -60,20 +62,18 @@
             this.$store.commit('general/setFromPrice', event.target.value);
 
             // update url
-            let query = {...this.$route.query};
-            query.from_price = event.target.value;
-            this.$router.push({ path: this.$route.path, query});
+            updateRouteQueryString('from_price', event.target.value, this.$route, this.$router);
 
+            // fetch
             this.$store.dispatch('general/fetchShopProducts');
           },
           updateToPrice(event) {
             this.$store.commit('general/setToPrice', event.target.value);
 
             // update url
-            let query = {...this.$route.query};
-            query.to_price = event.target.value;
-            this.$router.push({ path: this.$route.path, query});
+            updateRouteQueryString('to_price', event.target.value, this.$route, this.$router);
 
+            // fetch
             this.$store.dispatch('general/fetchShopProducts');
           }
         }

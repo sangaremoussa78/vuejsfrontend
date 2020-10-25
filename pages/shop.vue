@@ -29,6 +29,7 @@
     import ShopSidebar from "../components/shop-components/ShopSidebar";
     import ProductTemplateNormal from "../components/product-templates/ProductTemplateNormal";
     import FrontPagination from "../components/helpers/FrontPagination";
+    import {paginate} from "../helpers/functions";
 
     export default {
       name: "Shop",
@@ -62,18 +63,7 @@
       },
       methods: {
         paginate(page_number) {
-          this.$store.commit('general/setPage', page_number);
-
-            this.updateRouteQueryString('page', page_number);
-
-            this.$store.dispatch('general/fetchShopProducts');
-        },
-        updateRouteQueryString(key, value) {
-          let query = {...this.$route.query};
-
-          query[key] = value;
-
-          this.$router.push({ path: 'shop', query});
+            paginate(this, page_number);
         }
       },
       mounted() {

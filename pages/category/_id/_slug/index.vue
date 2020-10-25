@@ -1,6 +1,7 @@
 <template>
   <section>
     <div class="container">
+      <h2 class="title text-left">Latest Items In {{ this.category ? this.category.title : "" }}</h2>
       <div class="row">
         <div class="col-sm-3">
           <ShopSidebar pageType="category"></ShopSidebar>
@@ -8,7 +9,6 @@
 
         <div class="col-sm-9 padding-right" v-if="this.products.data && this.products.data.length">
           <div class="features_items">
-            <h2 class="title text-center">Latest Items</h2>
 
             <div class="col-sm-4" v-for="(item, index) in this.products.data" :key="index">
               <ProductTemplateNormal :item="item"></ProductTemplateNormal>
@@ -29,8 +29,13 @@
     import ShopSidebar from "../../../../components/shop-components/ShopSidebar";
     import ProductTemplateNormal from "../../../../components/product-templates/ProductTemplateNormal";
     import FrontPagination from "../../../../components/helpers/FrontPagination";
+    import {paginate} from "../../../../helpers/functions";
+
     export default {
         name: "Category",
+        validate({params}) {
+          return /^\d+$/.test(params.id);
+        },
         components: {
             FrontPagination,
             ProductTemplateNormal,
@@ -38,17 +43,29 @@
        },
       head() {
           return {
-            title: 'Online Shop | ' + (this.$store.state.general.category && this.$store.state.general.category.title ? this.$store.state.general.category.title : ""),
+            title: 'Online Shop | ' + (this.categoryDetails ? this.categoryDetails.title : ""),
             meta: [
               {
                 hid: 'description',
                 name: 'description',
-                content: (this.$store.state.general.category && this.$store.state.general.category.description ? this.$store.state.general.category.description : "")
+                content: (this.categoryDetails ? ( this.categoryDetails.description ? this.categoryDetails.description : this.categoryDetails.title ) : "")
               }
             ]
           }
-        },
+      },
+      asyncData(context) {
+        context.store.dispatch('general/resetShopFilter');
+        context.store.commit('general/setCategoryId', context.params.id);
+        return context.store.dispatch('general/fetchCategory', context.params.id).then((category) => {
+          return {
+            categoryDetails: category
+          }
+        });
+      },
       computed: {
+        category() {
+          return this.$store.state.general.category;
+        },
         products() {
           return this.$store.state.general.shop.products;
         },
@@ -58,32 +75,12 @@
       },
       methods: {
         paginate(page_number) {
-          this.$store.commit('general/setPage', page_number);
-
-          this.updateRouteQueryString('page', page_number);
-
-          this.$store.dispatch('general/fetchShopProducts');
-        },
-        updateRouteQueryString(key, value) {
-          let query = {...this.$route.query};
-
-          query[key] = value;
-
-          this.$router.push({ path: this.$route.path, query});
+          paginate(page_number);
         }
       },
       mounted() {
-          // reset shop filter
-        this.$store.dispatch('general/resetShopFilter');
-
-        // here we are retrieving the category id from the route params instead of query in contrast with shop page
-       if(this.$route.params.id) {
-
-         this.$store.commit('general/setCategoryId', this.$route.params.id);
-         this.$store.dispatch('general/fetchCategory', this.$route.params.id);
          // load brands by this category
          this.$store.dispatch('general/fetchBrandsByCategory', this.$route.params.id);
-
 
          if (this.$route.query.page) {
            this.$store.commit('general/setPage', this.$route.query.page);
@@ -108,7 +105,6 @@
              this.$nuxt.$loading.finish();
            });
          });
-       }
       }
     }
 </script>

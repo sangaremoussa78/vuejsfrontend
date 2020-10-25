@@ -94,7 +94,11 @@
       },
       mounted() {
          // re-initialize tabs
-        $('.options-dropdown').tab();
+        setTimeout(() => {
+          if($('.options-dropdown').length) {
+            $('.options-dropdown').tab();
+          }
+        }, 300);
       }
     }
 </script>

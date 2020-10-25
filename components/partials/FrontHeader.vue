@@ -6,7 +6,7 @@
         <div class="row">
           <div class="col-sm-4">
             <div class="logo pull-left">
-              <nuxt-link to="/"><img src="images/home/logo.png" alt="" /></nuxt-link>
+              <nuxt-link to="/"><img src="/images/home/logo.png" alt="" /></nuxt-link>
             </div>
           </div>
           <div class="col-sm-8">
@@ -95,5 +95,8 @@
 </script>
 
 <style scoped>
-
+  .search_box input {
+    font-size: 18px;
+    color: #424040;
+  }
 </style>

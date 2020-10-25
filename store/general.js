@@ -98,6 +98,10 @@ export const actions = {
     const response = await CategoryApi.getById(this.$axios, categoryId);
 
     commit('setCategory', response.category);
+
+    return new Promise( (resolve) => {
+      resolve(response.category);
+    });
   },
   resetShopFilter({commit}) {
     commit('setPage', 1);
@@ -105,6 +109,7 @@ export const actions = {
     commit('setBrand', "");
     commit('setFromPrice', "");
     commit('setToPrice', "");
+    commit('setKeyword', "");
     commit('setBrandsByCategory', []);
   }
 }

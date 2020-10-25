@@ -27,7 +27,6 @@
         components: {ProductTemplateMini},
         props: ["featuredItems"],
         mounted() {
-          console.info(this.featuredItems);
           // re-initialize the boostrap carousal
           $("#recommended-item-carousel").carousel();
         }
