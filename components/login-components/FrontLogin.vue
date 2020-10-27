@@ -35,6 +35,8 @@
 
               this.saveIntoStorage(response);
 
+              this.$store.dispatch('general/storeAuthData', {auth_token: response.access_token, user_data: response.user});
+
               this.$router.push('/');
             }).catch(error => {
               this.error_message = error.response.data.message;

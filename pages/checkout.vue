@@ -156,8 +156,9 @@
 
 <script>
     export default {
-        name: "Checkout",
-      head() {
+       name: "Checkout",
+       middleware: "auth",
+       head() {
         return {
           title: 'Online Shop | Checkout',
           meta: [

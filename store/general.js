@@ -16,7 +16,12 @@ export const state = () => ({
     to_price: '',
     keyword: ''
   },
-  category: {}
+  category: {},
+  auth: {
+    is_logged: false,
+    user_data: {},
+    auth_token: ""
+  }
 });
 
 export const mutations = {
@@ -49,6 +54,9 @@ export const mutations = {
   },
   setCategory(state, category) {
     state.category = category;
+  },
+  setAuthData(state, data) {
+    state.auth[data.key] = data.value;
   }
 };
 
@@ -111,5 +119,15 @@ export const actions = {
     commit('setToPrice', "");
     commit('setKeyword', "");
     commit('setBrandsByCategory', []);
+  },
+  storeAuthData({commit}, {auth_token, user_data}) {
+    commit('setAuthData', {key: 'is_logged', value: true});
+    commit('setAuthData', {key: 'auth_token', value: auth_token});
+    commit('setAuthData', {key: 'user_data', value: user_data});
+  },
+  resetAuthData({commit}) {
+    commit('setAuthData', {key: 'is_logged', value: false});
+    commit('setAuthData', {key: 'auth_token', value: ""});
+    commit('setAuthData', {key: 'user_data', value: {}});
   }
 }

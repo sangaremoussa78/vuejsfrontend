@@ -128,6 +128,7 @@
 <script>
     export default {
         name: "Cart",
+        middleware: "auth",
       head() {
         return {
           title: 'Online Shop | Cart',

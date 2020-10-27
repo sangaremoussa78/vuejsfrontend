@@ -12,11 +12,11 @@
           <div class="col-sm-8">
             <div class="shop-menu pull-right">
               <ul class="nav navbar-nav">
-                <li><a href="#"><i class="fa fa-user"></i> Account</a></li>
+                <li><nuxt-link to="/account"><i class="fa fa-user"></i> Account</nuxt-link></li>
                 <li><a href="#"><i class="fa fa-star"></i> Wishlist</a></li>
-                <li><a href="#"><i class="fa fa-list"></i> My Orders</a></li>
+                <li><nuxt-link to="/orders"><i class="fa fa-list"></i> My Orders</nuxt-link></li>
                 <li><nuxt-link to="/cart"><i class="fa fa-shopping-cart"></i> Cart</nuxt-link></li>
-                <li><nuxt-link to="/login"><i class="fa fa-lock"></i> Login</nuxt-link></li>
+                <li v-if="!this.isLogged"><nuxt-link to="/login"><i class="fa fa-lock"></i> Login</nuxt-link></li>
               </ul>
             </div>
           </div>
@@ -74,6 +74,9 @@
         computed: {
           categoriesTree() {
             return this.$store.state.general.categoriesTree;
+          },
+          isLogged() {
+            return this.$store.state.general.auth.is_logged;
           }
         },
         methods: {

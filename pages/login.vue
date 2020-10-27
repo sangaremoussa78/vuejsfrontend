@@ -23,7 +23,7 @@
     export default {
       name: "LoginPage",
       components: {
-          FrontRegister,
+        FrontRegister,
         FrontLogin
       },
       head() {
@@ -36,6 +36,11 @@
               content: 'Login Page'
             }
           ]
+        }
+      },
+      mounted() {
+        if(this.$store.state.general.auth.is_logged) {
+          this.$router.push("/");
         }
       }
     }

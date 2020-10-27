@@ -4,11 +4,7 @@
 
 <script>
     export default {
-        name: "orders",
+        name: "MyAccount",
         middleware: "auth"
     }
 </script>
-
-<style scoped>
-
-</style>
