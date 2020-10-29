@@ -16,7 +16,8 @@
                 <li><a href="#"><i class="fa fa-star"></i> Wishlist</a></li>
                 <li><nuxt-link to="/orders"><i class="fa fa-list"></i> My Orders</nuxt-link></li>
                 <li><nuxt-link to="/cart"><i class="fa fa-shopping-cart"></i> Cart</nuxt-link></li>
-                <li v-if="!this.isLogged"><nuxt-link to="/login"><i class="fa fa-lock"></i> Login</nuxt-link></li>
+                <li v-if="!this.isLogged"><nuxt-link to="/login"><i class="fa fa-sign-in"></i> Login</nuxt-link></li>
+                <li v-if="this.isLogged"><a href="#" v-on:click.prevent="signout()"><i class="fa fa-sign-out"></i> Sign out</a></li>
               </ul>
             </div>
           </div>
@@ -89,6 +90,23 @@
             this.$router.push({ path: "/search", query: {keyword: this.keyword}});
 
             this.$store.dispatch('general/fetchShopProducts');
+          },
+          signout() {
+            this.$axios.setHeader('Authorization', "Bearer " + localStorage.getItem('auth_token'));
+            this.$axios.get('/api/logout').then(response => {
+              if(response.data.success) {
+
+                localStorage.removeItem('auth_token');
+                localStorage.removeItem('is_authenticated');
+                localStorage.removeItem('user_data');
+
+                this.$store.dispatch('general/resetAuthData');
+
+                this.$router.push('/');
+              }
+            }).catch(err => {
+              console.log(err.response);
+            });
           }
         },
         mounted() {
