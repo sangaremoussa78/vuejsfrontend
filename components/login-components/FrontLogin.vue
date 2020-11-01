@@ -37,6 +37,8 @@
 
               this.$store.dispatch('general/storeAuthData', {auth_token: response.access_token, user_data: response.user});
 
+              this.onAfterLogin(response);
+
               this.$router.push('/');
             }).catch(error => {
               this.error_message = error.response.data.message;
@@ -57,6 +59,9 @@
             localStorage.setItem('is_authenticated', 1);
             localStorage.setItem('auth_token', response.access_token);
             localStorage.setItem('user_data', JSON.stringify(response.user));
+          },
+          onAfterLogin(res) {
+            this.$store.dispatch('cart/getAll');
           }
         }
     }

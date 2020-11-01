@@ -20,7 +20,7 @@
         props: ["item"],
         methods: {
           addToCart(productId) {
-
+            
           }
         }
     }

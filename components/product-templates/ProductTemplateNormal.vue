@@ -6,14 +6,16 @@
           <h2>${{ item.price_after_discount }}</h2>
           <del v-if="item.is_discount_active">${{ item.price }}</del>
           <p>{{ item.title_short }}</p>
-          <a href="javascript:void(0);" class="btn btn-default add-to-cart" @click.prevent="addToCart(item.id)"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+          <a v-if="!this.isProductAddedToCart(item.id)" href="javascript:void(0);" class="btn btn-default add-to-cart" @click.prevent="addToCart(item.id)"><i class="fa fa-shopping-cart"></i><i v-if="this.showSpinner" class="fa fa-spinner fa-spin"></i>Add to cart</a>
+          <a v-if="this.isProductAddedToCart(item.id)" href="javascript:void(0);" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Item in cart</a>
         </div>
         <div class="product-overlay">
           <div class="overlay-content">
             <h2>${{ item.price_after_discount }}</h2>
             <del v-if="item.is_discount_active">${{ item.price }}</del>
             <p>{{ item.title_short }}</p>
-            <a href="javascript:void(0);" class="btn btn-default add-to-cart" @click.prevent="addToCart(item.id)"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+            <a v-if="!this.isProductAddedToCart(item.id)" href="javascript:void(0);" class="btn btn-default add-to-cart" @click.prevent="addToCart(item.id)"><i class="fa fa-shopping-cart"></i><i v-if="this.showSpinner" class="fa fa-spinner fa-spin"></i>Add to cart</a>
+            <a v-if="this.isProductAddedToCart(item.id)" href="javascript:void(0);" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Item in cart</a>
           </div>
         </div>
         <div class="discount-ribbon" v-if="item.is_discount_active"><span>{{ item.discount }}%</span></div>
@@ -31,12 +33,33 @@
     export default {
         name: "ProductTemplateNormal",
         props: ["item"],
+        data() {
+          return {
+            showSpinner: false
+          }
+        },
         methods: {
             addToCart(productId) {
+              if(!this.$store.state.general.auth.is_logged || !this.$store.state.general.auth.auth_token) {
+                this.$router.push('/login');
+                return;
+              }
 
+              this.showSpinner = true;
+
+              this.$store.dispatch('cart/store', {product_id: productId, amount: 1, cb: () => {
+                  this.showSpinner = false;
+                }});
+
+              setTimeout(() => {
+                this.$router.push('/cart');
+              }, 1000);
             },
             addToWishList(productId) {
 
+            },
+            isProductAddedToCart(productId) {
+              return this.$store.state.cart.cart.find(item => item.product_id == productId) != undefined;
             }
         }
     }

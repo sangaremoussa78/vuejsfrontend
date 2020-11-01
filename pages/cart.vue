@@ -8,95 +8,59 @@
               <li class="active">Shopping Cart</li>
             </ol>
           </div>
+
+          <div class="alert alert-success" v-if="this.$store.state.cart.success_message != ''">{{ this.$store.state.cart.success_message }}</div>
+          <div class="alert alert-danger" v-if="this.$store.state.cart.error_message != ''">{{ this.$store.state.cart.error_message }}</div>
+
+          <div class="sufee-alert alert with-close alert-danger alert-dismissible" v-if="this.$store.state.cart.validation_errors.length">
+            <ul v-for="(error, index) in this.$store.state.cart.validation_errors" :key="index">
+              <li>{{ error }}</li>
+            </ul>
+          </div>
+
           <div class="table-responsive cart_info">
-            <table class="table table-condensed">
+            <p v-if="this.cart.length == 0" class="text-left alert alert-warning">Your cart is empty! Add items to the cart</p>
+
+            <table class="table table-condensed" v-if="this.cart.length > 0">
               <thead>
               <tr class="cart_menu">
-                <td class="image">Item</td>
-                <td class="description"></td>
-                <td class="price">Price</td>
-                <td class="quantity">Quantity</td>
-                <td class="total">Total</td>
-                <td></td>
+                <td class="image" width="15%">Item</td>
+                <td class="description" width="35%"></td>
+                <td class="price" width="10%">Price</td>
+                <td class="quantity" width="15%">Quantity</td>
+                <td class="total" width="10%">Total</td>
+                <td width="15%"></td>
               </tr>
               </thead>
               <tbody>
-              <tr>
+              <tr v-for="item in this.cart" v-bind:key="item.id">
                 <td class="cart_product">
-                  <a href=""><img src="images/cart/one.png" alt=""></a>
+                  <nuxt-link :to="'/p/' + item.product_id + '/' + item.product.slug"><img :src="item.product.gallery[0].image_url.cart_thumb" v-bind:alt="item.title"></nuxt-link>
                 </td>
-                <td class="cart_description">
-                  <h4><a href="">Colorblock Scuba</a></h4>
-                  <p>Web ID: 1089772</p>
+                <td class="cart_description" width="30%">
+                  <h4><nuxt-link :to="'/p/' + item.product_id + '/' + item.product.slug"><span>{{ item.product.title_short }}</span></nuxt-link></h4>
+                  <p v-if="item.product.product_code != ''">Product Code: {{item.product.product_code}}</p>
                 </td>
                 <td class="cart_price">
-                  <p>$59</p>
+                  <p>${{ item.product.price_after_discount }}</p>
                 </td>
                 <td class="cart_quantity">
                   <div class="cart_quantity_button">
-                    <a class="cart_quantity_up" href=""> + </a>
-                    <input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
-                    <a class="cart_quantity_down" href=""> - </a>
+                    <a class="cart_quantity_up" href="#" @click.prevent="incrementQuantity(item)"> + </a>
+                    <input class="cart_quantity_input" type="text" name="quantity" :value="item.amount_temp" autocomplete="off" size="2" @change="updateQuantity($event, item)">
+                    <a class="cart_quantity_down" href="#" @click.prevent="decrementQuantity(item)"> - </a>
                   </div>
                 </td>
                 <td class="cart_total">
-                  <p class="cart_total_price">$59</p>
+                  <p class="cart_total_price">${{ item.total_price_formatted }}</p>
                 </td>
-                <td class="cart_delete">
-                  <a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
+                <td class="cart_delete text-center">
+                  <i class="fa fa-spinner fa-spin" v-if="item.spinner"></i>
+                  <button type="button" class="btn btn-info" v-if="item.amount != item.amount_temp" v-on:click="saveCartAmount(item)">Save</button>
+                  <a class="cart_quantity_delete" href="javascript:void(0);"><i class="fa fa-times"></i></a>
                 </td>
               </tr>
 
-              <tr>
-                <td class="cart_product">
-                  <a href=""><img src="images/cart/two.png" alt=""></a>
-                </td>
-                <td class="cart_description">
-                  <h4><a href="">Colorblock Scuba</a></h4>
-                  <p>Web ID: 1089772</p>
-                </td>
-                <td class="cart_price">
-                  <p>$59</p>
-                </td>
-                <td class="cart_quantity">
-                  <div class="cart_quantity_button">
-                    <a class="cart_quantity_up" href=""> + </a>
-                    <input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
-                    <a class="cart_quantity_down" href=""> - </a>
-                  </div>
-                </td>
-                <td class="cart_total">
-                  <p class="cart_total_price">$59</p>
-                </td>
-                <td class="cart_delete">
-                  <a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
-                </td>
-              </tr>
-              <tr>
-                <td class="cart_product">
-                  <a href=""><img src="images/cart/three.png" alt=""></a>
-                </td>
-                <td class="cart_description">
-                  <h4><a href="">Colorblock Scuba</a></h4>
-                  <p>Web ID: 1089772</p>
-                </td>
-                <td class="cart_price">
-                  <p>$59</p>
-                </td>
-                <td class="cart_quantity">
-                  <div class="cart_quantity_button">
-                    <a class="cart_quantity_up" href=""> + </a>
-                    <input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
-                    <a class="cart_quantity_down" href=""> - </a>
-                  </div>
-                </td>
-                <td class="cart_total">
-                  <p class="cart_total_price">$59</p>
-                </td>
-                <td class="cart_delete">
-                  <a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
-                </td>
-              </tr>
               </tbody>
             </table>
           </div>
@@ -112,9 +76,9 @@
             <div class="col-sm-6">
               <div class="total_area">
                 <ul>
-                  <li>Cart Sub Total <span>$59</span></li>
+                  <li>Cart Sub Total <span>${{this.getCartTotal()}}</span></li>
                   <li>Shipping Cost <span>Free</span></li>
-                  <li>Total <span>$61</span></li>
+                  <li>Total <span>${{this.getCartTotal()}}</span></li>
                 </ul>
                 <a class="btn btn-default check_out" href="">Check Out</a>
               </div>
@@ -129,21 +93,92 @@
     export default {
         name: "Cart",
         middleware: "auth",
+        data() {
+          return {
+
+          }
+        },
       head() {
         return {
-          title: 'Online Shop | Cart',
+          title: 'Online Shop | My Cart',
           meta: [
             {
               hid: 'description',
               name: 'description',
-              content: 'Cart Page'
+              content: 'My Cart'
             }
           ]
+        }
+      },
+      computed: {
+        cart() {
+          return this.$store.state.cart.cart;
+        }
+      },
+      methods: {
+        incrementQuantity(item) {
+            if(item.product.amount >= item.amount_temp) {
+              let newAmount = item.amount_temp + 1;
+
+              this.$store.commit("cart/updateCartItemAmountTemp", {id: item.id, amount: newAmount});
+            } else {
+              return;
+            }
+        },
+        decrementQuantity(item) {
+           if(item.amount_temp <= 1) {
+             return;
+           }
+
+          let newAmount = item.amount_temp - 1;
+
+          this.$store.commit("cart/updateCartItemAmountTemp", {id: item.id, amount: newAmount});
+        },
+        updateQuantity(event, item) {
+          let newAmount = parseInt(event.target.value);
+
+          if(isNaN(newAmount)) {
+            this.$store.commit("cart/updateCartItemAmountTemp", {id: item.id, amount: 1});
+            alert("Please enter an integer value");
+            return;
+          }
+
+          if(newAmount == 0) {
+            this.$store.commit("cart/updateCartItemAmountTemp", {id: item.id, amount: 1});
+            alert("Please enter correct value starting from 1");
+            return;
+          }
+
+          this.$store.commit("cart/updateCartItemAmountTemp", {id: item.id, amount: newAmount});
+        },
+        saveCartAmount(item) {
+          if(!this.$store.state.general.auth.is_logged || !this.$store.state.general.auth.auth_token) {
+            this.$router.push('/login');
+            return;
+          }
+
+          this.$store.dispatch('cart/update', {product_id: item.product_id, amount: item.amount_temp});
+
+        },
+        getCartTotal() {
+          let total = 0;
+          this.$store.state.cart.cart.map(item => {
+            total += item.total_price_numeric;
+          });
+
+          return total.toFixed(1);
+        }
+      },
+      mounted() {
+        if(localStorage.getItem('is_authenticated') === "1" && localStorage.getItem("auth_token") != null) {
+          this.$store.dispatch('cart/getAll');
         }
       }
     }
 </script>
 
 <style scoped>
-
+  .cart_delete a {
+    background: #FE980F;
+  }
 </style>

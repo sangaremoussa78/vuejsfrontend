@@ -26,6 +26,8 @@
             this.$store.dispatch('general/storeAuthData', {auth_token: localStorage.getItem("auth_token"), user_data: user});
           } else {
             this.$store.dispatch('general/resetAuthData');
+
+            this.$store.commit('cart/clear');
           }
         }
       },
@@ -43,6 +45,10 @@
                 localStorage.removeItem('user_data');
 
                 this.$store.dispatch('general/resetAuthData');
+
+                this.$store.commit('cart/clear');
+
+                this.$router.push("/");
               }
             }).catch(err => {
               localStorage.removeItem('auth_token');
@@ -50,6 +56,10 @@
               localStorage.removeItem('user_data');
 
               this.$store.dispatch('general/resetAuthData');
+
+              this.$store.commit('cart/clear');
+
+              this.$router.push("/");
             });
           } else {
             this.$store.dispatch('general/resetAuthData');
@@ -64,6 +74,11 @@
 
       if(!this.$store.state.general.auth.is_logged || !this.$store.state.general.auth.auth_token) {
         clearInterval(verify);
+      }
+
+      // fetch shopping cart
+      if(localStorage.getItem('is_authenticated') === "1" && localStorage.getItem("auth_token") != null) {
+        this.$store.dispatch('cart/getAll');
       }
     }
   }

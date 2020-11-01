@@ -15,7 +15,7 @@
                 <li><nuxt-link to="/account"><i class="fa fa-user"></i> Account</nuxt-link></li>
                 <li><a href="#"><i class="fa fa-star"></i> Wishlist</a></li>
                 <li><nuxt-link to="/orders"><i class="fa fa-list"></i> My Orders</nuxt-link></li>
-                <li><nuxt-link to="/cart"><i class="fa fa-shopping-cart"></i> Cart</nuxt-link></li>
+                <li><nuxt-link to="/cart"><i class="fa fa-shopping-cart"></i> Cart <span class="badge badge-danger" v-if="this.cart.length > 0">{{this.cart.length}}</span></nuxt-link></li>
                 <li v-if="!this.isLogged"><nuxt-link to="/login"><i class="fa fa-sign-in"></i> Login</nuxt-link></li>
                 <li v-if="this.isLogged"><a href="#" v-on:click.prevent="signout()"><i class="fa fa-sign-out"></i> Sign out</a></li>
               </ul>
@@ -78,6 +78,9 @@
           },
           isLogged() {
             return this.$store.state.general.auth.is_logged;
+          },
+          cart() {
+            return this.$store.state.cart.cart;
           }
         },
         methods: {
@@ -102,11 +105,17 @@
 
                 this.$store.dispatch('general/resetAuthData');
 
+                this.onAfterSignout();
+
                 this.$router.push('/');
               }
             }).catch(err => {
               console.log(err.response);
+              this.onAfterSignout();
             });
+          },
+          onAfterSignout() {
+            this.$store.commit('cart/clear');
           }
         },
         mounted() {
@@ -119,5 +128,10 @@
   .search_box input {
     font-size: 18px;
     color: #424040;
+  }
+
+  .badge-danger {
+    color: #fff;
+    background-color: #dc3545;
   }
 </style>
