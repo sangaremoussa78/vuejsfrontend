@@ -72,10 +72,6 @@ export const actions = {
 
            commit('setSpinner', {id: response.item.id, value: false});
          }, 3000);
-
-         if(payload.cb != undefined) {
-           payload.cb(response);
-         }
        }
      }).catch(err => {
        dispatch('handleError', err);
@@ -120,6 +116,38 @@ export const actions = {
 
           commit('addToCart', item);
         });
+    });
+  },
+  removeCartItem({commit, dispatch}, id) {
+    CartApi.delete(this.$axios, id).then(response => {
+      if(response.success == 1) {
+        commit('setSuccessMessage', response.message);
+        commit('removeFromCart', id);
+      }
+    }).catch(err => {
+      dispatch('handleError', err);
+    }).finally(() => {
+      setTimeout(() => {
+        commit('setErrorMessage', "");
+        commit('setSuccessMessage', "");
+        commit('setValidationErrors', []);
+      }, 3000);
+    });
+  },
+  clearCart({commit, dispatch}) {
+    CartApi.clear(this.$axios).then(response => {
+      if(response.success == 1) {
+        commit('setSuccessMessage', response.message);
+        commit('clear');
+      }
+    }).catch(err => {
+      dispatch('handleError', err);
+    }).finally(() => {
+      setTimeout(() => {
+        commit('setErrorMessage', "");
+        commit('setSuccessMessage', "");
+        commit('setValidationErrors', []);
+      }, 3000);
     });
   },
   handleError({commit}, err) {

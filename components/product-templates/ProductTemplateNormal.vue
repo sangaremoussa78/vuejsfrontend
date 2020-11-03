@@ -6,7 +6,7 @@
           <h2>${{ item.price_after_discount }}</h2>
           <del v-if="item.is_discount_active">${{ item.price }}</del>
           <p>{{ item.title_short }}</p>
-          <a v-if="!this.isProductAddedToCart(item.id)" href="javascript:void(0);" class="btn btn-default add-to-cart" @click.prevent="addToCart(item.id)"><i class="fa fa-shopping-cart"></i><i v-if="this.showSpinner" class="fa fa-spinner fa-spin"></i>Add to cart</a>
+          <a v-if="!this.isProductAddedToCart(item.id)" href="javascript:void(0);" class="btn btn-default add-to-cart" @click.prevent="addToCart(item.id)"><i class="fa fa-shopping-cart"></i><i v-if="item.spinner" class="fa fa-spinner fa-spin"></i>Add to cart</a>
           <a v-if="this.isProductAddedToCart(item.id)" href="javascript:void(0);" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Item in cart</a>
         </div>
         <div class="product-overlay">
@@ -14,7 +14,7 @@
             <h2>${{ item.price_after_discount }}</h2>
             <del v-if="item.is_discount_active">${{ item.price }}</del>
             <p>{{ item.title_short }}</p>
-            <a v-if="!this.isProductAddedToCart(item.id)" href="javascript:void(0);" class="btn btn-default add-to-cart" @click.prevent="addToCart(item.id)"><i class="fa fa-shopping-cart"></i><i v-if="this.showSpinner" class="fa fa-spinner fa-spin"></i>Add to cart</a>
+            <a v-if="!this.isProductAddedToCart(item.id)" href="javascript:void(0);" class="btn btn-default add-to-cart" @click.prevent="addToCart(item.id)"><i class="fa fa-shopping-cart"></i><i v-if="item.spinner" class="fa fa-spinner fa-spin"></i>Add to cart</a>
             <a v-if="this.isProductAddedToCart(item.id)" href="javascript:void(0);" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Item in cart</a>
           </div>
         </div>
@@ -35,7 +35,7 @@
         props: ["item"],
         data() {
           return {
-            showSpinner: false
+
           }
         },
         methods: {
@@ -45,15 +45,11 @@
                 return;
               }
 
-              this.showSpinner = true;
-
-              this.$store.dispatch('cart/store', {product_id: productId, amount: 1, cb: () => {
-                  this.showSpinner = false;
-                }});
+              this.$store.dispatch('cart/store', {product_id: productId, amount: 1});
 
               setTimeout(() => {
                 this.$router.push('/cart');
-              }, 1000);
+              }, 2000);
             },
             addToWishList(productId) {
 

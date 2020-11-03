@@ -57,17 +57,24 @@
                 <td class="cart_delete text-center">
                   <i class="fa fa-spinner fa-spin" v-if="item.spinner"></i>
                   <button type="button" class="btn btn-info" v-if="item.amount != item.amount_temp" v-on:click="saveCartAmount(item)">Save</button>
-                  <a class="cart_quantity_delete" href="javascript:void(0);"><i class="fa fa-times"></i></a>
+                  <a class="cart_quantity_delete" href="javascript:void(0);" @click="removeCartItem(item.id)"><i class="fa fa-times"></i></a>
                 </td>
               </tr>
 
               </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="6">
+                    <button type="button" class="btn btn-danger pull-right" @click="clearCart()"><i class="fa fa-trash-o"></i> Clear Cart</button>
+                  </td>
+                </tr>
+              </tfoot>
             </table>
           </div>
         </div>
       </section>
 
-      <section id="do_action">
+      <section id="do_action" v-if="this.cart.length > 0">
         <div class="container">
           <div class="row">
             <div class="col-sm-6">
@@ -138,14 +145,12 @@
           let newAmount = parseInt(event.target.value);
 
           if(isNaN(newAmount)) {
-            this.$store.commit("cart/updateCartItemAmountTemp", {id: item.id, amount: 1});
             alert("Please enter an integer value");
             return;
           }
 
           if(newAmount == 0) {
-            this.$store.commit("cart/updateCartItemAmountTemp", {id: item.id, amount: 1});
-            alert("Please enter correct value starting from 1");
+            alert("Please enter valid value starting from 1");
             return;
           }
 
@@ -167,6 +172,26 @@
           });
 
           return total.toFixed(1);
+        },
+        removeCartItem(id) {
+          if(confirm("Are you sure?")) {
+            if (!this.$store.state.general.auth.is_logged || !this.$store.state.general.auth.auth_token) {
+              this.$router.push('/login');
+              return;
+            }
+
+            this.$store.dispatch('cart/removeCartItem', id);
+          }
+        },
+        clearCart() {
+          if(confirm("Are you sure?")) {
+            if (!this.$store.state.general.auth.is_logged || !this.$store.state.general.auth.auth_token) {
+              this.$router.push('/login');
+              return;
+            }
+
+            this.$store.dispatch('cart/clearCart');
+          }
         }
       },
       mounted() {
