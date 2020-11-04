@@ -6,16 +6,16 @@
           <h2>${{ item.price_after_discount }}</h2>
           <del v-if="item.is_discount_active">${{ item.price }}</del>
           <p>{{ item.title_short }}</p>
-          <a v-if="!this.isProductAddedToCart(item.id)" href="javascript:void(0);" class="btn btn-default add-to-cart" @click.prevent="addToCart(item.id)"><i class="fa fa-shopping-cart"></i><i v-if="item.spinner" class="fa fa-spinner fa-spin"></i>Add to cart</a>
-          <a v-if="this.isProductAddedToCart(item.id)" href="javascript:void(0);" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Item in cart</a>
+          <a v-if="!this.isProductAddedToCart(item.id)" href="javascript:void(0);" class="btn btn-default add-to-cart" @click.prevent="addToCart(item.id)"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+          <a v-if="this.isProductAddedToCart(item.id)" href="javascript:void(0);" class="btn btn-default add-to-cart" @click.prevent="removeFromCart(item.id)"><i class="fa fa-shopping-cart"></i>Remove from cart</a>
         </div>
         <div class="product-overlay">
           <div class="overlay-content">
             <h2>${{ item.price_after_discount }}</h2>
             <del v-if="item.is_discount_active">${{ item.price }}</del>
             <p>{{ item.title_short }}</p>
-            <a v-if="!this.isProductAddedToCart(item.id)" href="javascript:void(0);" class="btn btn-default add-to-cart" @click.prevent="addToCart(item.id)"><i class="fa fa-shopping-cart"></i><i v-if="item.spinner" class="fa fa-spinner fa-spin"></i>Add to cart</a>
-            <a v-if="this.isProductAddedToCart(item.id)" href="javascript:void(0);" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Item in cart</a>
+            <a v-if="!this.isProductAddedToCart(item.id)" href="javascript:void(0);" class="btn btn-default add-to-cart" @click.prevent="addToCart(item.id)"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+            <a v-if="this.isProductAddedToCart(item.id)" href="javascript:void(0);" class="btn btn-default add-to-cart" @click.prevent="removeFromCart(item.id)"><i class="fa fa-shopping-cart"></i>Remove from cart</a>
           </div>
         </div>
         <div class="discount-ribbon" v-if="item.is_discount_active"><span>{{ item.discount }}%</span></div>
@@ -56,6 +56,18 @@
             },
             isProductAddedToCart(productId) {
               return this.$store.state.cart.cart.find(item => item.product_id == productId) != undefined;
+            },
+            removeFromCart(productId) {
+              if(confirm("Are you sure?")) {
+                if (!this.$store.state.general.auth.is_logged || !this.$store.state.general.auth.auth_token) {
+                  this.$router.push('/login');
+                  return;
+                }
+
+                const cartItem = this.$store.state.cart.cart.find(item => item.product_id == productId);
+
+                this.$store.dispatch('cart/removeCartItem', cartItem.id);
+              }
             }
         }
     }

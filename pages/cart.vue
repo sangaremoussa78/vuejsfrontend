@@ -2,12 +2,7 @@
     <div>
       <section id="cart_items">
         <div class="container">
-          <div class="breadcrumbs">
-            <ol class="breadcrumb">
-              <li><a href="#">Home</a></li>
-              <li class="active">Shopping Cart</li>
-            </ol>
-          </div>
+          <h2 class="title text-left">Shopping Cart</h2>
 
           <div class="alert alert-success" v-if="this.$store.state.cart.success_message != ''">{{ this.$store.state.cart.success_message }}</div>
           <div class="alert alert-danger" v-if="this.$store.state.cart.error_message != ''">{{ this.$store.state.cart.error_message }}</div>
@@ -19,7 +14,7 @@
           </div>
 
           <div class="table-responsive cart_info">
-            <p v-if="this.cart.length == 0" class="text-left alert alert-warning">Your cart is empty! Add items to the cart</p>
+            <p v-if="this.cart.length == 0" class="text-left alert alert-warning">Your cart is empty! <n-link to="/shop">Add items to the cart</n-link></p>
 
             <table class="table table-condensed" v-if="this.cart.length > 0">
               <thead>

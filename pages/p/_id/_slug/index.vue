@@ -8,6 +8,15 @@
             <div class="col-sm-5">
               <div v-if="this.product.gallery.length" id="similar-product" class="carousel slide" data-ride="carousel">
 
+                <div class="alert alert-success" v-if="this.$store.state.cart.success_message != ''">{{ this.$store.state.cart.success_message }}</div>
+                <div class="alert alert-danger" v-if="this.$store.state.cart.error_message != ''">{{ this.$store.state.cart.error_message }}</div>
+
+                <div class="sufee-alert alert with-close alert-danger alert-dismissible" v-if="this.$store.state.cart.validation_errors.length">
+                  <ul v-for="(error, index) in this.$store.state.cart.validation_errors" :key="index">
+                    <li>{{ error }}</li>
+                  </ul>
+                </div>
+
                 <!-- Wrapper for slides -->
                 <div class="carousel-inner">
                   <div v-for="(imageItem, index) in this.product.gallery" :class="'item ' + (index == 0 ? 'active' : '')">
@@ -34,14 +43,15 @@
                 <del v-if="this.product.is_discount_active" style="display: block">Price before: ${{ this.product.price }}</del>
                 <span>
 									<span>${{ this.product.price_after_discount }}</span>
-									<span v-if="this.product.amount > 0">
+									<span v-if="this.product.amount > 0 && !isProductAddedToCart(this.product.id)">
                     <label>Quantity:</label>
-                    <input type="text" value="1" />
-                    <button type="button" class="btn btn-fefault cart" @click="addToCart(this.product.id)">
+                    <input type="text" v-model="cart_quantity" min="1" />
+                    <button type="button" class="btn btn-fefault cart" @click="addToCart(product.id)">
                       <i class="fa fa-shopping-cart"></i>
                       Add to cart
                     </button>
                   </span>
+                  <button type="button" class="btn btn-fefault cart" v-if="isProductAddedToCart(product.id)" @click="removeFromCart(product.id)"><i class="fa fa-trash-o"></i> Remove from cart</button>
 								</span>
                 <p><b>Availability:</b> {{ this.product.amount > 0 ? 'In Stock (' + this.product.amount + ' items available)' : 'Not Available' }}</p>
                 <p v-if="this.product.brand"><b>Brand:</b> {{ this.product.brand.title }}</p>
@@ -117,7 +127,8 @@
       },
       data() {
         return {
-          similarProducts: []
+          similarProducts: [],
+          cart_quantity: 1
         }
       },
       head() {
@@ -199,7 +210,43 @@
       },
       methods: {
         addToCart(productId) {
+          if(!this.$store.state.general.auth.is_logged || !this.$store.state.general.auth.auth_token) {
+            this.$router.push('/login');
+            return;
+          }
 
+          if(isNaN(parseInt(this.cart_quantity))) {
+            alert("Please enter an integer value");
+            return;
+          }
+
+          if(parseInt(this.cart_quantity) <= 0) {
+            alert("Please enter a value greater than or equal 1");
+            return;
+          }
+
+          this.$store.dispatch('cart/store', {product_id: productId, amount: parseInt(this.cart_quantity)});
+
+          setTimeout(() => {
+            if(this.$store.state.cart.error_message == "") {
+              this.$router.push('/cart');
+            }
+          }, 2000);
+        },
+        isProductAddedToCart(productId) {
+          return this.$store.state.cart.cart.find(item => item.product_id == productId) != undefined;
+        },
+        removeFromCart(productId) {
+          if(confirm("Are you sure?")) {
+            if (!this.$store.state.general.auth.is_logged || !this.$store.state.general.auth.auth_token) {
+              this.$router.push('/login');
+              return;
+            }
+
+            const cartItem = this.$store.state.cart.cart.find(item => item.product_id == productId);
+
+            this.$store.dispatch('cart/removeCartItem', cartItem.id);
+          }
         }
       }
     }
