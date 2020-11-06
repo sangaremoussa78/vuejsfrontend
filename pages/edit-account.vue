@@ -2,10 +2,13 @@
   <section id="form" style="margin-top: 60px !important;"><!--form-->
     <div class="container">
       <div class="row">
-        <div class="col-sm-11 col-sm-offset-1">
-          <nuxt-link to="/account"><i class="fa fa-backward"></i> Back</nuxt-link>
 
-          <div class="signup-form">
+        <div class="col-md-3">
+          <account-sidebar></account-sidebar>
+        </div>
+
+        <div class="col-sm-9 col-md-9">
+          <div class="signup-form" style="margin-top: 0 !important;">
             <h2>Edit Profile</h2>
             <div class="alert alert-success" v-if="this.success_message">{{ this.success_message }}</div>
             <div class="alert alert-danger" v-if="this.error_message">{{ this.error_message }}</div>
@@ -33,9 +36,13 @@
 </template>
 
 <script>
+    import AccountSidebar from "../components/account-components/AccountSidebar";
     export default {
-        name: "EditAccountPage",
-        middleware: "auth",
+      name: "EditAccountPage",
+      components: {
+          AccountSidebar
+      },
+      middleware: "auth",
         data() {
           return {
             user_data: {
