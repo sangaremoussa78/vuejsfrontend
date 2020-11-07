@@ -118,6 +118,7 @@
     import {ProductApi} from '../../../../api/product';
     import {ShopApi} from '../../../../api/shop';
     import ProductTemplateMini from "../../../../components/product-templates/ProductTemplateMini";
+    import {addToCart, removeFromCartByProductId, isProductInCart} from '../../../../helpers/cart';
 
     export default {
       name: "ProductDetails",
@@ -210,10 +211,6 @@
       },
       methods: {
         addToCart(productId) {
-          if(!this.$store.state.general.auth.is_logged || !this.$store.state.general.auth.auth_token) {
-            this.$router.push('/login');
-            return;
-          }
 
           if(isNaN(parseInt(this.cart_quantity))) {
             alert("Please enter an integer value");
@@ -225,28 +222,13 @@
             return;
           }
 
-          this.$store.dispatch('cart/store', {product_id: productId, amount: parseInt(this.cart_quantity)});
-
-          setTimeout(() => {
-            if(this.$store.state.cart.error_message == "") {
-              this.$router.push('/cart');
-            }
-          }, 2000);
+          addToCart(productId, parseInt(this.cart_quantity), this.$store, this.$router);
         },
         isProductAddedToCart(productId) {
-          return this.$store.state.cart.cart.find(item => item.product_id == productId) != undefined;
+          return isProductInCart(productId, this.$store);
         },
         removeFromCart(productId) {
-          if(confirm("Are you sure?")) {
-            if (!this.$store.state.general.auth.is_logged || !this.$store.state.general.auth.auth_token) {
-              this.$router.push('/login');
-              return;
-            }
-
-            const cartItem = this.$store.state.cart.cart.find(item => item.product_id == productId);
-
-            this.$store.dispatch('cart/removeCartItem', cartItem.id);
-          }
+          removeFromCartByProductId(productId, this.$store, this.$router);
         }
       }
     }

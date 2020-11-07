@@ -16,36 +16,20 @@
 </template>
 
 <script>
+    import {addToCart, removeFromCartByProductId, isProductInCart} from '../../helpers/cart';
+
     export default {
         name: "ProductTemplateMini",
         props: ["item"],
         methods: {
           addToCart(productId) {
-            if(!this.$store.state.general.auth.is_logged || !this.$store.state.general.auth.auth_token) {
-              this.$router.push('/login');
-              return;
-            }
-
-            this.$store.dispatch('cart/store', {product_id: productId, amount: 1});
-
-            setTimeout(() => {
-              this.$router.push('/cart');
-            }, 2000);
+            addToCart(productId, 1, this.$store, this.$router);
           },
           isProductAddedToCart(productId) {
-            return this.$store.state.cart.cart.find(item => item.product_id == productId) != undefined;
+            return isProductInCart(productId, this.$store);
           },
           removeFromCart(productId) {
-            if(confirm("Are you sure?")) {
-              if (!this.$store.state.general.auth.is_logged || !this.$store.state.general.auth.auth_token) {
-                this.$router.push('/login');
-                return;
-              }
-
-              const cartItem = this.$store.state.cart.cart.find(item => item.product_id == productId);
-
-              this.$store.dispatch('cart/removeCartItem', cartItem.id);
-            }
+            removeFromCartByProductId(productId, this.$store, this.$router);
           }
         }
     }

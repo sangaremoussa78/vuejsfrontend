@@ -19,11 +19,6 @@ export const mutations = {
   clear(state) {
     state.cart = [];
   },
-  updateCartItem(state, payload) {
-    const itemIndex = state.cart.findIndex(item => item.id == payload.id);
-
-    state.cart[itemIndex] = payload;
-  },
   updateCartItemAmount(state, item) {
     const itemIndex = state.cart.findIndex(i => i.id == item.id);
 

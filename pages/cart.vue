@@ -92,6 +92,8 @@
 </template>
 
 <script>
+    import {updateCartItemAmount, removeFromCartByItemId, clearCart} from '../helpers/cart';
+
     export default {
         name: "Cart",
         middleware: "auth",
@@ -152,13 +154,7 @@
           this.$store.commit("cart/updateCartItemAmountTemp", {id: item.id, amount: newAmount});
         },
         saveCartAmount(item) {
-          if(!this.$store.state.general.auth.is_logged || !this.$store.state.general.auth.auth_token) {
-            this.$router.push('/login');
-            return;
-          }
-
-          this.$store.dispatch('cart/update', {product_id: item.product_id, amount: item.amount_temp});
-
+          updateCartItemAmount(item.product_id, item.amount_temp, this.$store, this.$router);
         },
         getCartTotal() {
           let total = 0;
@@ -169,24 +165,10 @@
           return total.toFixed(1);
         },
         removeCartItem(id) {
-          if(confirm("Are you sure?")) {
-            if (!this.$store.state.general.auth.is_logged || !this.$store.state.general.auth.auth_token) {
-              this.$router.push('/login');
-              return;
-            }
-
-            this.$store.dispatch('cart/removeCartItem', id);
-          }
+          removeFromCartByItemId(id, this.$store, this.$router);
         },
         clearCart() {
-          if(confirm("Are you sure?")) {
-            if (!this.$store.state.general.auth.is_logged || !this.$store.state.general.auth.auth_token) {
-              this.$router.push('/login');
-              return;
-            }
-
-            this.$store.dispatch('cart/clearCart');
-          }
+          clearCart(this.$store, this.$router);
         }
       },
       mounted() {
