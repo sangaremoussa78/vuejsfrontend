@@ -82,7 +82,7 @@
                   <li>Shipping Cost <span>Free</span></li>
                   <li>Total <span>${{this.getCartTotal()}}</span></li>
                 </ul>
-                <a class="btn btn-default check_out" href="">Check Out</a>
+                <nuxt-link class="btn btn-default check_out" to="/checkout">Check Out</nuxt-link>
               </div>
             </div>
           </div>

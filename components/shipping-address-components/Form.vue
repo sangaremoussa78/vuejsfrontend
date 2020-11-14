@@ -1,0 +1,134 @@
+<template>
+  <div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" aria-label="Close" @click="dismiss()"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">{{ this.is_edit ? "Edit" : "Add" }} Shipping Address</h4>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-success" v-if="this.success_message != ''">{{ this.success_message }}</div>
+          <div class="alert alert-danger" v-if="this.error_message != ''">{{ this.error_message }}</div>
+
+            <ul class="sufee-alert alert with-close alert-danger alert-dismissible" v-if="this.validation_errors.length">
+              <li v-for="(error, index) in this.validation_errors" :key="index">{{ error }}</li>
+            </ul>
+
+          <form class="form-horizontal">
+            <div class="form-group">
+              <label>Address</label>
+              <input type="text" placeholder="Address" name="address" class="form-control" v-model="address" />
+            </div>
+
+            <div class="form-group">
+              <label>Mobile</label>
+              <input type="text" placeholder="Mobile" name="mobile" class="form-control" v-model="mobile" />
+            </div>
+
+            <div class="form-group">
+              <label>Is Primary</label>
+              <input type="checkbox" name="is_primary" v-model="is_primary" />
+            </div>
+
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" @click="dismiss()">Close</button>
+          <button type="button" class="btn btn-primary" @click="saveAddress()">Save</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div>
+</template>
+
+<script>
+    import {ShippingAddressApi} from "../../api/shipping-address";
+
+    export default {
+        name: "ShippingAddressForm",
+        props: ["is_edit", "editShippingAddress"],
+        data() {
+          return {
+            address: "",
+            mobile: "",
+            is_primary: false,
+            success_message: true,
+            error_message: false,
+            validation_errors: []
+          }
+        },
+        methods: {
+          dismiss() {
+            this.$emit('dismissModal');
+          },
+          saveAddress() {
+            this.success_message = "";
+            this.error_message = "";
+            this.validation_errors = [];
+
+            const data = {
+              address: this.address,
+              mobile: this.mobile,
+            }
+
+            if(this.is_primary) {
+              data.is_primary = 1;
+            }
+
+            let api;
+
+            if(!this.is_edit) {
+              api = ShippingAddressApi.store(this.$axios, data);
+            } else {
+              api = ShippingAddressApi.update(this.$axios, data, this.editShippingAddress.id);
+            }
+
+            api.then(response => {
+              if(response.success) {
+                this.success_message = response.message;
+                this.$emit('submitForm');
+
+                setTimeout(() => {
+                  this.resetForm();
+                  this.dismiss();
+                }, 1000);
+              }
+            }).catch(err => {
+                this.error_message = err.response.data.message;
+              if(err.response.data.errors) {
+                let errors = [];
+                for(let key in err.response.data.errors) {
+                  errors.push(err.response.data.errors[key][0]);
+                }
+
+                this.validation_errors = errors;
+              }
+            });
+          },
+          resetForm() {
+            this.address = "";
+            this.mobile = "";
+            this.is_primary = false;
+
+            this.success_message = "";
+            this.error_message = "";
+            this.validation_errors = [];
+          }
+        },
+        mounted() {
+          this.resetForm();
+
+          if(this.is_edit) {
+            this.address = this.editShippingAddress.address;
+            this.mobile = this.editShippingAddress.mobile;
+            this.is_primary = this.editShippingAddress.is_primary ? true : false;
+          }
+        }
+    }
+</script>
+
+<style scoped>
+  div.modal {
+    display: inline-block !important;
+  }
+</style>
