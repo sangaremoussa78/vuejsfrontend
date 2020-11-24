@@ -80,5 +80,8 @@ export default {
     }
   },
   srcDir: __dirname,
-  buildDir: '.nuxt/frontend'
+  buildDir: '.nuxt/frontend',
+  env: {
+    PAYPAL_CLIENT_ID: "AciqhrWDI01ZYxoCRxJkN8HwFTUh_0qo1yUoKFAG-VPMCfFWimhmA5b5-HeDZeijkuEuVNpX61qoXRGN"
+  }
 }

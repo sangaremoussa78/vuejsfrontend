@@ -23,6 +23,9 @@
                     <thead>
                         <tr>
                           <th>Address</th>
+                          <th>Country</th>
+                          <th>City</th>
+                          <th>Postal Code</th>
                           <th class="text-center">Actions</th>
                         </tr>
                     </thead>
@@ -35,6 +38,9 @@
                              <span style="display: block">{{address.mobile}}</span>
                            </address>
                          </td>
+                         <td>{{ address.country }}</td>
+                         <td>{{ address.city }}</td>
+                         <td>{{ address.postal_code }}</td>
                          <td class="text-center">
                            <a href="#" @click.prevent="showAddress(address.id)" class="btn btn-info btn-sm"><i class="fa fa-edit"></i></a>
                            <a href="#" @click.prevent="deleteAddress(address.id)" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></a>

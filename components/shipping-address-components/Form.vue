@@ -16,8 +16,23 @@
 
           <form class="form-horizontal">
             <div class="form-group">
+              <label>Country</label>
+              <Countries :country="country" @countryUpdated="setCountry"></Countries>
+            </div>
+
+            <div class="form-group">
+              <label>City</label>
+              <input type="text" placeholder="City" name="city" class="form-control" v-model="city" />
+            </div>
+
+            <div class="form-group">
               <label>Address</label>
               <input type="text" placeholder="Address" name="address" class="form-control" v-model="address" />
+            </div>
+
+            <div class="form-group">
+              <label>Postal Code</label>
+              <input type="text" placeholder="Postal Code" name="postal_code" class="form-control" v-model="postal_code" />
             </div>
 
             <div class="form-group">
@@ -43,13 +58,18 @@
 
 <script>
     import {ShippingAddressApi} from "../../api/shipping-address";
+    import Countries from "./Countries";
 
     export default {
         name: "ShippingAddressForm",
-        props: ["is_edit", "editShippingAddress"],
+      components: {Countries},
+      props: ["is_edit", "editShippingAddress"],
         data() {
           return {
             address: "",
+            country: "",
+            city: "",
+            postal_code: "",
             mobile: "",
             is_primary: false,
             success_message: true,
@@ -61,6 +81,9 @@
           dismiss() {
             this.$emit('dismissModal');
           },
+          setCountry(event) {
+            this.country = event;
+          },
           saveAddress() {
             this.success_message = "";
             this.error_message = "";
@@ -69,6 +92,9 @@
             const data = {
               address: this.address,
               mobile: this.mobile,
+              country: this.country,
+              city: this.city,
+              postal_code: this.postal_code
             }
 
             if(this.is_primary) {
@@ -108,6 +134,9 @@
           resetForm() {
             this.address = "";
             this.mobile = "";
+            this.country = "";
+            this.city = "";
+            this.postal_code = "";
             this.is_primary = false;
 
             this.success_message = "";
@@ -121,6 +150,9 @@
           if(this.is_edit) {
             this.address = this.editShippingAddress.address;
             this.mobile = this.editShippingAddress.mobile;
+            this.country = this.editShippingAddress.country;
+            this.city = this.editShippingAddress.city;
+            this.postal_code = this.editShippingAddress.postal_code;
             this.is_primary = this.editShippingAddress.is_primary ? true : false;
           }
         }

@@ -19,7 +19,7 @@
           <li v-for="address in this.shipping_addresses" :key="address.id" style="display: block">
             <label><input type="radio" name="shipping_address_id" :value="address.id" v-model="selected_shipping_address">
               <span>
-                <strong>{{address.address}} (Primary)</strong>
+                <strong>{{ address.country }} - {{ address.city }} - ({{ address.postal_code }}) - {{address.address}} (Primary)</strong>
                 <span>{{address.mobile}}</span>
               </span>
             </label>
@@ -88,20 +88,25 @@
 
       <div class="payment-options">
 					<span v-for="method in this.payment_methods" :key="method.id">
-						<label><input type="radio" name="payment_method_id" :value="method.id" v-model="selected_payment_method"> {{ method.name }}</label>
+						<label><input type="radio" name="payment_method" :value="method.slug" v-model="selected_payment_method" @change="toggleButton()"> {{ method.name }}</label>
 					</span>
       </div>
-      <a href="#" class="btn btn-lg btn-default check_out pull-right" style="margin-bottom: 20px" @click.prevent="checkout()">Proceed</a>
+      <a href="#" class="btn btn-lg btn-default check_out pull-right" :style="'margin-bottom: 20px;display:' + (this.showButton ? 'block' : 'none') " @click.prevent="checkout()">Proceed</a>
+
+      <Paypal v-if="this.selected_payment_method == 'paypal' && this.selected_shipping_address != ''" :cart="this.cart" :shipping-addresses="this.shipping_addresses" :shipping-address="this.selected_shipping_address" :payment-method="this.selected_payment_method"></Paypal>
     </div>
   </section>
 </template>
 
 <script>
     import {ShippingAddressApi} from "../api/shipping-address";
+    import Paypal from "../components/checkout-components/Paypal";
+    import {OrdersApi} from "../api/order";
 
     export default {
        name: "Checkout",
-       middleware: "auth",
+      components: {Paypal},
+      middleware: "auth",
        data() {
           return {
             shipping_addresses: [],
@@ -109,7 +114,8 @@
             selected_shipping_address: "",
             selected_payment_method: "",
             error_message: "",
-            validation_errors: []
+            validation_errors: [],
+            showButton: false
           }
        },
        head() {
@@ -121,6 +127,12 @@
               name: 'description',
               content: 'Checkout Page'
             }
+          ],
+          script: [
+            {
+              type: 'text/javascript',
+              src: "https://www.paypal.com/sdk/js?client-id="+process.env.PAYPAL_CLIENT_ID+"&currency=USD&disable-funding=credit,card"
+            }
           ]
         }
       },
@@ -130,6 +142,13 @@
         }
       },
       methods: {
+        toggleButton() {
+          if(this.selected_payment_method !== 'paypal') {
+            this.showButton = true;
+          } else {
+            this.showButton = false;
+          }
+        },
         getCartTotal() {
           let total = 0;
           this.$store.state.cart.cart.map(item => {
@@ -162,13 +181,18 @@
             return;
           }
 
+          if(this.selected_payment_method == 'paypal') {
+            return;
+          }
+
           if (confirm("Confirm sending the payment request?")) {
             const data = {
               shipping_address_id: this.selected_shipping_address,
-              payment_method_id: this.selected_payment_method
+              payment_method: this.selected_payment_method,
+              status_message: "Order added and waiting for delivery"
             };
 
-            this.$axios.$post('/api/orders', data).then(response => {
+            OrdersApi.store(this.$axios, data).then(response => {
 
               this.$store.commit('cart/clear');
 

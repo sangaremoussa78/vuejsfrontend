@@ -1,8 +1,8 @@
 <template>
   <section id="cart_items">
     <div class="container">
-      <div class="alert alert-success">
-        Order added successfully and will be delivered to the specified shipping address
+      <div class="alert alert-danger">
+        Order cancelled
       </div>
     </div>
   </section>
@@ -10,15 +10,11 @@
 
 <script>
     export default {
-        name: "checkout-thanks",
+        name: "checkout-cancel",
         mounted() {
           setTimeout(() => {
-              this.$router.push("/orders");
+            this.$router.push("/orders");
           }, 3000);
         }
     }
 </script>
-
-<style scoped>
-
-</style>
