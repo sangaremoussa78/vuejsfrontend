@@ -132,7 +132,7 @@ export const actions = {
       commit('setProductList', response.products);
     });
   },
-  delete({commit, state}, id) {
+  delete({commit, state, dispatch}, id) {
     commit('shared/resetStatusMessagesParameters', null, {root: true});
     commit('shared/setStatusMessageParameter', {key: 'showLoading', val: true}, {root: true});
 
@@ -148,6 +148,7 @@ export const actions = {
       }
     }).catch(err => {
       console.log(err);
+      dispatch('showValidationErrors', err);
     }).finally(() => {
       setTimeout(() => {
         commit('shared/resetStatusMessagesParameters', null, {root: true});

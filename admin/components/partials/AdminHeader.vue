@@ -2,13 +2,7 @@
     <header class="header-desktop">
       <div class="section__content section__content--p30">
         <div class="container-fluid">
-          <div class="header-wrap">
-            <form class="form-header" action="" method="POST">
-              <input class="au-input au-input--xl" type="text" name="search" placeholder="Search for data...">
-              <button class="au-btn--submit" type="submit">
-                <i class="zmdi zmdi-search"></i>
-              </button>
-            </form>
+          <div class="header-wrap" style="float: right">
             <div class="header-button">
               <div class="noti-wrap">
                 <div class="noti__item js-item-menu">
@@ -37,7 +31,7 @@
               <div class="account-wrap">
                 <div class="account-item clearfix js-item-menu">
                   <div class="image">
-                    <img src="images/icon/avatar-01.jpg" alt="John Doe">
+                    <img src="/imgs/avatar.png" :alt="getUserData().name">
                   </div>
                   <div class="content">
                     <a class="js-acc-btn" href="#">{{ getUserData().name }}</a>
@@ -46,7 +40,7 @@
                     <div class="info clearfix">
                       <div class="image">
                         <a href="#">
-                          <img src="images/icon/avatar-01.jpg" alt="John Doe">
+                          <img src="/imgs/avatar.png" :alt="getUserData().name">
                         </a>
                       </div>
                       <div class="content">
@@ -58,8 +52,9 @@
                     </div>
                     <div class="account-dropdown__body">
                       <div class="account-dropdown__item">
-                        <a href="#">
-                          <i class="zmdi zmdi-account"></i>Account</a>
+                        <nuxt-link :to="'/user/' + getUserData().id">
+                          <i class="zmdi zmdi-account"></i>Account
+                        </nuxt-link>
                       </div>
                     </div>
                     <div class="account-dropdown__footer">

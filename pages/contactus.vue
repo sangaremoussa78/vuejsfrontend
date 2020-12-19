@@ -98,9 +98,9 @@
               message: this.message
             };
 
-            this.$axios.post("/api/contact", data).then(res => {
+            this.$axios.$post("/api/contact", data).then(res => {
 
-              this.success_message = res.data.message;
+              this.success_message = res.message;
 
               this.name = "";
               this.email = "";
