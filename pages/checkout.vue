@@ -91,7 +91,7 @@
 						<label><input type="radio" name="payment_method" :value="method.slug" v-model="selected_payment_method" @change="toggleButton()"> {{ method.name }}</label>
 					</span>
       </div>
-      <a href="#" class="btn btn-lg btn-default check_out pull-right" :style="'margin-bottom: 20px;display:' + (this.showButton ? 'block' : 'none') " @click.prevent="checkout()">Proceed</a>
+      <a href="#" class="btn btn-lg btn-default check_out pull-right" :style="'margin-bottom: 20px;display:' + (this.showButton ? 'block' : 'none') " @click.prevent="payCash()">Proceed</a>
 
       <Paypal v-if="this.selected_payment_method == 'paypal' && this.selected_shipping_address != ''" :cart="this.cart" :shipping-addresses="this.shipping_addresses" :shipping-address="this.selected_shipping_address" :payment-method="this.selected_payment_method"></Paypal>
     </div>
@@ -100,6 +100,7 @@
 
 <script>
     import {ShippingAddressApi} from "../api/shipping-address";
+    import {PaymentMethodsApi} from "../api/payment-method";
     import Paypal from "../components/checkout-components/Paypal";
     import {OrdersApi} from "../api/order";
 
@@ -157,7 +158,7 @@
 
           return total.toFixed(1);
         },
-        checkout() {
+        payCash() {
           this.error_message = "";
           this.validation_errors = [];
 
@@ -181,6 +182,7 @@
             return;
           }
 
+          // skip for paypal
           if(this.selected_payment_method == 'paypal') {
             return;
           }
@@ -212,12 +214,18 @@
         }
       },
       mounted() {
+        if (this.cart.length == 0) {
+          alert("You must have items in the cart in order to checkout!");
+          this.$router.push("/");
+        }
+
         ShippingAddressApi.list(this.$axios).then(response => {
           this.shipping_addresses = response.shipping_addresses.filter(item => item.is_primary == 1 );
         });
 
-        this.$axios.setHeader('Authorization', "Bearer " + localStorage.getItem('auth_token'));
-        this.$axios.$get('/api/paymentMethods').then(res => this.payment_methods = res.payment_methods);
+        PaymentMethodsApi.list(this.$axios).then(response => {
+          this.payment_methods = response.payment_methods;
+        });
       }
     }
 </script>

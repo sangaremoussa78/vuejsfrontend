@@ -22,7 +22,8 @@
       </div>
       <div class="choose">
         <ul class="nav nav-pills nav-justified">
-          <li><a href="javascript:void(0);" @click.prevent="addToWishList(item.id)"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
+          <li v-if="!item.in_wishlist"><a href="javascript:void(0);" @click.prevent="addToWishList(item)"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
+          <li v-if="item.in_wishlist"><a href="javascript:void(0);" @click.prevent="removeFromWishlist(item)"><i class="fa fa-trash-o"></i>Erase from wishlist</a></li>
           <li><nuxt-link :to="'/p/' + item.id + '/' + item.slug"><i class="fa fa-eye"></i>view item</nuxt-link></li>
         </ul>
       </div>
@@ -31,6 +32,7 @@
 
 <script>
     import {addToCart, removeFromCartByProductId, isProductInCart} from '../../helpers/cart';
+    import {addToWishlist, removeFromWishlist} from '../../helpers/wishlist';
 
     export default {
         name: "ProductTemplateNormal",
@@ -44,19 +46,30 @@
             addToCart(productId) {
               addToCart(productId, 1, this.$store, this.$router);
             },
-            addToWishList(productId) {
-
-            },
             isProductAddedToCart(productId) {
               return isProductInCart(productId, this.$store);
             },
             removeFromCart(productId) {
               removeFromCartByProductId(productId, this.$store, this.$router);
+            },
+            addToWishList(product) {
+              addToWishlist(product.id);
+
+              if(this.$router.currentRoute.name == 'index') {
+                product.in_wishlist = true;
+              } else {
+                this.$store.commit('general/setWishedProduct', product.id);
+              }
+            },
+            removeFromWishlist(product) {
+              removeFromWishlist(product.id);
+
+              if(this.$router.currentRoute.name == 'index') {
+                product.in_wishlist = false;
+              } else {
+                this.$store.commit('general/setUnwishedProduct', product.id);
+              }
             }
         }
     }
 </script>
-
-<style scoped>
-
-</style>

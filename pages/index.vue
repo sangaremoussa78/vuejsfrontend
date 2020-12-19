@@ -26,6 +26,8 @@
   import LatestItems from "../components/home-components/LatestItems";
   import FeaturedCategories from "../components/home-components/FeaturedCategories";
   import FeaturedProducts from "../components/home-components/FeaturedProducts";
+  import {updateWishlistProducts} from '../helpers/wishlist';
+
   export default {
     components: {
       FeaturedProducts,
@@ -62,6 +64,7 @@
       // retrieve latest items
       HomeApis.getLatestProducts(this.$axios).then(res => {
         this.latestProducts = res.products;
+        updateWishlistProducts(this.latestProducts);
       });
 
       // featured categories
@@ -103,7 +106,3 @@
     }
   }
 </script>
-
-<style>
-
-</style>

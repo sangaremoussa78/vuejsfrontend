@@ -84,12 +84,7 @@
         methods: {
           toggleDetails(order) {
               order.show_details = !order.show_details;
-            console.info(order);
           }
         }
     }
 </script>
-
-<style scoped>
-
-</style>

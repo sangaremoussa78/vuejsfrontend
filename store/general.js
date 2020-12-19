@@ -1,6 +1,7 @@
 import { HomeApis } from '../api/home';
 import {ShopApi} from "../api/shop";
 import {CategoryApi} from "../api/category";
+import {updateWishlistProducts} from "../helpers/wishlist";
 
 export const state = () => ({
   categoriesTree: [],
@@ -57,6 +58,14 @@ export const mutations = {
   },
   setAuthData(state, data) {
     state.auth[data.key] = data.value;
+  },
+  setWishedProduct(state, productId) {
+    const index = state.shop.products.data.findIndex(i => i.id == productId);
+    state.shop.products.data[index].in_wishlist = true;
+  },
+  setUnwishedProduct(state, productId) {
+    const index = state.shop.products.data.findIndex(i => i.id == productId);
+    state.shop.products.data[index].in_wishlist = false;
   }
 };
 
@@ -95,6 +104,7 @@ export const actions = {
     }
 
     const response = await ShopApi.search(this.$axios, searchParams.join("&"));
+    updateWishlistProducts(response.products.data);
     commit('setProducts', response.products);
   },
   async fetchBrandsByCategory({commit}, categoryId) {

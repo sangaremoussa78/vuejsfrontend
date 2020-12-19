@@ -20,17 +20,15 @@
         <i class="fas fa-shopping-cart"></i>Products
       </nuxt-link>
     </li>
-    <li>
-      <a href="#">
-        <i class="far fa-map"></i>Shipping addresses</a>
+    <li :class="{active: this.$route.path.indexOf('orders') !== -1 && this.$route.path.indexOf('pending') === -1}">
+      <nuxt-link to="/orders">
+        <i class="fas fa-gears"></i>Orders
+      </nuxt-link>
     </li>
-    <li>
-      <a href="#">
-        <i class="fas fa-gears"></i>Orders</a>
-    </li>
-    <li>
-      <a href="#">
-        <i class="fas fa-credit-card"></i>Payment methods</a>
+    <li :class="{active: this.$route.path.indexOf('orders/pending') !== -1}">
+      <nuxt-link to="/orders/pending">
+        <i class="fas fa-gears"></i>Pending Orders
+      </nuxt-link>
     </li>
     <li :class="{active: this.$route.path.indexOf('user') !== -1}">
       <nuxt-link to="/user">

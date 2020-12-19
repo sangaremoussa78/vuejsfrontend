@@ -44,6 +44,10 @@ export default {
       {
         src: '/vendor/bootstrap-4.1/bootstrap.min.js',
         type: 'text/javascript'
+      },
+      {
+        src: 'https://js.pusher.com/7.0/pusher.min.js',
+        type: 'text/javascript'
       }
     ]
   },
@@ -60,6 +64,8 @@ export default {
   ** https://nuxtjs.org/guide/plugins
   */
   plugins: [
+    '~/plugins/pusher.js',
+    '~/plugins/toastr.js'
   ],
   /*
   ** Auto import components
@@ -95,5 +101,8 @@ export default {
 
   },
   srcDir: __dirname,
-  buildDir: '.nuxt/admin'
+  buildDir: '.nuxt/admin',
+  env: {
+    PUSHER_APP_KEY: "10fdbdd73abd56781022"
+  }
 }

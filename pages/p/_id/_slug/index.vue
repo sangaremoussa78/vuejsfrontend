@@ -52,6 +52,8 @@
                     </button>
                   </span>
                   <button type="button" class="btn btn-fefault cart" v-if="isProductAddedToCart(product.id)" @click="removeFromCart(product.id)"><i class="fa fa-trash-o"></i> Remove from cart</button>
+                  <button type="button" class="btn btn-default" title="add to wishlist" @click.prevent="addToWishList(product)" v-if="!product.in_wishlist"><i class="fa fa-heart-o"></i></button>
+                  <button type="button" class="btn btn-default" title="remove from wishlist" @click.prevent="removeFromWishlist(product)" v-if="product.in_wishlist"><i class="fa fa-heart"></i></button>
 								</span>
                 <p><b>Availability:</b> {{ this.product.amount > 0 ? 'In Stock (' + this.product.amount + ' items available)' : 'Not Available' }}</p>
                 <p v-if="this.product.brand"><b>Brand:</b> {{ this.product.brand.title }}</p>
@@ -119,6 +121,7 @@
     import {ShopApi} from '../../../../api/shop';
     import ProductTemplateMini from "../../../../components/product-templates/ProductTemplateMini";
     import {addToCart, removeFromCartByProductId, isProductInCart} from '../../../../helpers/cart';
+    import {addToWishlist, isProductInWishlist, removeFromWishlist} from "../../../../helpers/wishlist";
 
     export default {
       name: "ProductDetails",
@@ -208,6 +211,13 @@
           });
 
         }, 200);
+
+        // set wishlist products
+        setTimeout(() => {
+          if (isProductInWishlist(this.product.id)) {
+            this.product.in_wishlist = true;
+          }
+        }, 600);
       },
       methods: {
         addToCart(productId) {
@@ -229,6 +239,16 @@
         },
         removeFromCart(productId) {
           removeFromCartByProductId(productId, this.$store, this.$router);
+        },
+        addToWishList(product) {
+          addToWishlist(product.id);
+
+          this.product.in_wishlist = true;
+        },
+        removeFromWishlist(product) {
+          removeFromWishlist(product.id);
+
+          this.product.in_wishlist = false;
         }
       }
     }

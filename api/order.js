@@ -10,9 +10,6 @@ const OrdersApi = {
   list: (axios) => {
     OrdersApi.setAuthToken(axios);
     return axios.$get('/api/orders');
-  },
-  show: (axios, id) => {
-
   }
 }
 

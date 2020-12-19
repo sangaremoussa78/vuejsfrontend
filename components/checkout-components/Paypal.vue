@@ -93,7 +93,6 @@
                 this.show_loading = true;
                 return actions.order.capture().then((details) => {
                   this.show_loading = false;
-                  console.info(details);
                   alert('Transaction completed by ' + details.payer.name.given_name);
                   this.saveOrder({
                       status: 'success',
