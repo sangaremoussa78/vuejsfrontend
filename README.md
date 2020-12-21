@@ -17,7 +17,7 @@ axios: {
     }
 ```
 
-# admin nuxt.config.js
+## admin nuxt.config.js
 ```
 axios: {
     baseURL: '' 
@@ -28,8 +28,8 @@ axios: {
     }
 ```
 
-# serve with hot reload at localhost:3000 for website and localhost:4000 for admin
+## serve with hot reload at localhost:3000 for website and localhost:4000 for admin
 $ npm run dev
 
-# build for production and launch server
+## build for production and launch server
 $ npm run build
