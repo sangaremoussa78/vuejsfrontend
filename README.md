@@ -6,15 +6,30 @@
 # install dependencies
 $ npm install
 
-# serve with hot reload at localhost:3000
+# main nuxt.config.js
+```
+axios: {
+    baseURL: '' 
+  }
+  
+  env: {
+      PAYPAL_CLIENT_ID: ""
+    }
+```
+
+# admin nuxt.config.js
+```
+axios: {
+    baseURL: '' 
+  }
+  
+  env: {
+      PUSHER_APP_KEY: ""
+    }
+```
+
+# serve with hot reload at localhost:3000 for website and localhost:4000 for admin
 $ npm run dev
 
 # build for production and launch server
 $ npm run build
-$ npm run start
-
-# generate static project
-$ npm run generate
-```
-
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).

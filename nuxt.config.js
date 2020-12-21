@@ -65,7 +65,7 @@ export default {
     '@nuxtjs/axios',
   ],
   axios: {
-    baseURL: 'http://localhost/webmobtuts/online-shop-backend/public/'
+    baseURL: ''   // your lumen project base url
   },
   /*
   ** Build configuration
@@ -82,6 +82,6 @@ export default {
   srcDir: __dirname,
   buildDir: '.nuxt/frontend',
   env: {
-    PAYPAL_CLIENT_ID: "AciqhrWDI01ZYxoCRxJkN8HwFTUh_0qo1yUoKFAG-VPMCfFWimhmA5b5-HeDZeijkuEuVNpX61qoXRGN"
+    PAYPAL_CLIENT_ID: "" // add your paypal client id
   }
 }

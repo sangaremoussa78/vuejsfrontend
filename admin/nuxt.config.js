@@ -91,7 +91,7 @@ export default {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    baseURL: 'http://localhost/webmobtuts/online-shop-backend/public/'
+    baseURL: ''  // your lumen project base url
   },
   /*
   ** Build configuration
@@ -103,6 +103,6 @@ export default {
   srcDir: __dirname,
   buildDir: '.nuxt/admin',
   env: {
-    PUSHER_APP_KEY: "10fdbdd73abd56781022"
+    PUSHER_APP_KEY: "" // set pusher app key
   }
 }
