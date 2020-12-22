@@ -16,12 +16,12 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.11.0",
+    "@popperjs/core": "^2.6.0",
     "bootstrap": "^4.5.0",
     "bootstrap-vue": "^2.15.0",
     "jquery": "^3.5.1",
     "moment": "^2.28.0",
     "nuxt": "^2.13.0",
-    "popper.js": "^1.16.1",
     "vue-quill-editor": "^3.0.6",
     "vue-toastr": "^2.1.2",
     "vuejs-datepicker": "^1.6.2"
