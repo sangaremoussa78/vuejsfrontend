@@ -6,25 +6,25 @@
 # install dependencies
 $ npm install
 
-# main nuxt.config.js
+# nuxt.config.js
+1- update the <project directory>/nuxt.config.js
 ```
 axios: {
-    baseURL: '' 
+    baseURL: ''   // lumen project base url
   }
   
   env: {
-      PAYPAL_CLIENT_ID: ""
+      PAYPAL_CLIENT_ID: ""   // paypal client id
     }
 ```
-
-## admin nuxt.config.js
+2- update the <project directory>/admin/nuxt.config.js
 ```
 axios: {
-    baseURL: '' 
+    baseURL: ''    // lumen project base url
   }
   
   env: {
-      PUSHER_APP_KEY: ""
+      PUSHER_APP_KEY: ""   // pusher app key
     }
 ```
 
