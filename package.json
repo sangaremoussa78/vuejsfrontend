@@ -8,6 +8,7 @@
     "dev": "concurrently \"npm run frontend:dev\" \"npm run admin:dev\"",
     "frontend:build": "nuxt build --config-file nuxt.config.js",
     "admin:build": "nuxt build --config-file admin/nuxt.config.js",
+    "build": "concurrently \"npm run frontend:build\" \"npm run admin:build\"",
     "frontend:start": "nuxt start --config-file nuxt.config.js",
     "admin:start": "nuxt start --config-file admin/nuxt.config.js",
     "export": "nuxt export",
