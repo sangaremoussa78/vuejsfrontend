@@ -13,7 +13,8 @@
     "admin:start": "nuxt start --config-file admin/nuxt.config.js",
     "export": "nuxt export",
     "frontend:serve": "nuxt serve --config-file nuxt.config.js",
-    "admin:serve": "nuxt serve --config-file admin/nuxt.config.js"
+    "admin:serve": "nuxt serve --config-file admin/nuxt.config.js",
+    "generate:gh-pages": "DEPLOY_ENV=GH_PAGES nuxt generate --fail-on-page-error"
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.11.0",
