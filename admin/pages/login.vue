@@ -4,14 +4,14 @@
     <div class="alert alert-danger" v-for="item in this.validation_errors" :key="item">{{ item }}</div>
     <form action="#" method="post" @submit.prevent="login()">
       <div class="form-group">
-        <label>Email Address</label>
+        <label>Adresse Email</label>
         <input class="au-input au-input--full" type="email" name="email" placeholder="Email" v-model="login_data.email">
       </div>
       <div class="form-group">
-        <label>Password</label>
+        <label>Mot de passe</label>
         <input class="au-input au-input--full" type="password" name="password" placeholder="Password" v-model="login_data.password">
       </div>
-      <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">sign in</button>
+      <button class="au-btn au-btn--block au-btn--blue m-b-20" type="submit">Se Connecter</button>
     </form>
   </div>
 </template>

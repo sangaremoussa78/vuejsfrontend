@@ -1,7 +1,7 @@
 <template>
   <div class="left-sidebar">
 
-    <h2 v-if="pageType === 'shop'">Category</h2>
+    <h2 v-if="pageType === 'shop'">Categorie</h2>
     <ShopCategoryTree :categoriesTree="categoriesTree" v-if="pageType === 'shop'"></ShopCategoryTree>
 
     <div class="brands_products" v-if="brands.length && (pageType === 'shop' || pageType === 'category')"><!--brands_products-->
@@ -17,7 +17,7 @@
     </div><!--/brands_products-->
 
     <div class="price-range"><!--price-range-->
-      <h2>Price Range</h2>
+      <h2>Intervalle de prix</h2>
       <div class="well">
 
         <input type="number" name="from_price" placeholder="From $" class="form-control" style="margin-bottom: 5px" @change="updateFromPrice" :value="this.$store.state.general.shop_filter.from_price" />

@@ -65,7 +65,10 @@ export default {
     '@nuxtjs/axios',
   ],
   axios: {
-    baseURL: ''   // your lumen project base url
+    //baseURL:  'http://localhost/online-shop-backend/public/',
+    baseURL:  'http://localhost:8001/',
+
+    // your lumen project base url
   },
   /*
   ** Build configuration

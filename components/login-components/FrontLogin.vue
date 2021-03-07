@@ -1,12 +1,12 @@
 <template>
   <div class="login-form"><!--login form-->
-    <h2>Login to your account</h2>
+    <h2>Connexion</h2>
     <div class="alert alert-danger" v-if="this.error_message">{{ this.error_message }}</div>
     <div class="alert alert-danger" v-for="item in this.validation_errors" :key="item">{{ item }}</div>
     <form action="#" method="post" @submit.prevent="login()">
-      <input type="email" name="email" placeholder="Email Address" v-model="login_data.email" />
-      <input type="password" name="password" placeholder="Password" v-model="login_data.password" />
-      <button type="submit" class="btn btn-default">Login</button>
+      <input type="email" name="email" placeholder="Votre adresse Email " v-model="login_data.email" />
+      <input type="password" name="password" placeholder="Votre mot de passe" v-model="login_data.password" />
+      <button type="submit" class="btn btn-default ">Connecter</button>
     </form>
   </div>
 </template>

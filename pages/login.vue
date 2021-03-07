@@ -6,7 +6,7 @@
           <FrontLogin></FrontLogin>
         </div>
         <div class="col-sm-1">
-          <h2 class="or">OR</h2>
+          <h2 class="or">OU</h2>
         </div>
         <div class="col-sm-4">
           <FrontRegister></FrontRegister>

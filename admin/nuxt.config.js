@@ -14,6 +14,7 @@ export default {
   ** Headers of the page
   ** See https://nuxtjs.org/api/configuration-head
   */
+
   head: {
     title: 'online shop dashboard',
     bodyAttrs: {
@@ -84,14 +85,15 @@ export default {
     // Doc: https://bootstrap-vue.js.org
     // 'bootstrap-vue/nuxt',
     // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
   ],
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    baseURL: ''  // your lumen project base url
+    baseURL: 'http://localhost:8001/',  // your lumen project base url
+//    baseURL: process.env.AUTH_API
   },
   /*
   ** Build configuration
